@@ -3,6 +3,27 @@
 input AMPLIFY {
   globalAuthRule: AuthRule = { allow: public }
 } # FOR TESTING ONLY!
+#
+# =====================
+#   ENUMS
+# =====================
+
+enum WorkoutType {
+  WEIGHT
+  CARDIO
+}
+
+enum WorkoutUnitType {
+  LB
+  KG
+  MIN
+  SEC
+}
+
+# =====================
+#   MODELS
+# =====================
+
 type User @model {
   sub: String!
   workouts: [Workout] @hasMany
@@ -28,9 +49,13 @@ type Workout @model {
   id: ID!
   name: String!
   sub: String!
-  type: String!
+  type: WorkoutType!
   logs: [Log] @hasMany
   notes: String
+  units: WorkoutUnitType # for lifts
+  targetSetRange: [Int]
+  targetRepRange: [Int]
+  targetDurationRange: [Int]
 }
 
 type Log @model {
@@ -43,4 +68,5 @@ type Log @model {
 type Set @model {
   weight: Int
   reps: Int
+  duration: Int
 }

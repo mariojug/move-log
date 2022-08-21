@@ -3,7 +3,7 @@ import React from "react";
 
 // TODO: add logic to pull workout logs
 // TODO: add logic to add/update/delete logs
-// TODO: add logic to update notes for the workout
+// TODO: add logic to update Workout - name, setCount, repCount, units, notes
 const Workout = () => {
   return (
     <View>
