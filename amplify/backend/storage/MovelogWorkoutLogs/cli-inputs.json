@@ -1,0 +1,26 @@
+{
+  "resourceName": "MovelogWorkoutLogs",
+  "tableName": "WorkougLogs",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "workoutId",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "idWorkoutIdIndex",
+      "partitionKey": {
+        "fieldName": "id",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "workoutId",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}

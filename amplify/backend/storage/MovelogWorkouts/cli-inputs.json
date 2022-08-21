@@ -1,0 +1,26 @@
+{
+  "resourceName": "MovelogWorkouts",
+  "tableName": "Workouts",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "sub",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "idSubIndex",
+      "partitionKey": {
+        "fieldName": "id",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "sub",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}

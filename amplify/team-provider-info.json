@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-movelog-dev-30551-authRole",
+      "UnauthRoleArn": "arn:aws:iam::650655445212:role/amplify-movelog-dev-30551-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::650655445212:role/amplify-movelog-dev-30551-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-movelog-dev-30551-deployment",
+      "UnauthRoleName": "amplify-movelog-dev-30551-unauthRole",
+      "StackName": "amplify-movelog-dev-30551",
+      "StackId": "arn:aws:cloudformation:us-east-1:650655445212:stack/amplify-movelog-dev-30551/149fd160-2128-11ed-93b0-0a1f68890ca5",
+      "AmplifyAppId": "d1cyam55nzgqxk"
+    },
+    "categories": {
+      "auth": {
+        "undefined": {},
+        "movelog": {}
+      }
+    }
+  }
+}
