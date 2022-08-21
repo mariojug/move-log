@@ -2,6 +2,138 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      sub
+      workouts {
+        items {
+          id
+          name
+          sub
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          sectionWorkoutsId
+        }
+        nextToken
+      }
+      routines {
+        items {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+        }
+        nextToken
+      }
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      sub
+      workouts {
+        items {
+          id
+          name
+          sub
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          sectionWorkoutsId
+        }
+        nextToken
+      }
+      routines {
+        items {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+        }
+        nextToken
+      }
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    deleteUser(input: $input, condition: $condition) {
+      sub
+      workouts {
+        items {
+          id
+          name
+          sub
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          sectionWorkoutsId
+        }
+        nextToken
+      }
+      routines {
+        items {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+        }
+        nextToken
+      }
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createRoutine = /* GraphQL */ `
   mutation CreateRoutine(
     $input: CreateRoutineInput!
@@ -14,17 +146,19 @@ export const createRoutine = /* GraphQL */ `
       days
       sections {
         items {
+          id
           name
           sub
-          id
           createdAt
           updatedAt
           routineSectionsId
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
+      userRoutinesId
     }
   }
 `;
@@ -40,17 +174,19 @@ export const updateRoutine = /* GraphQL */ `
       days
       sections {
         items {
+          id
           name
           sub
-          id
           createdAt
           updatedAt
           routineSectionsId
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
+      userRoutinesId
     }
   }
 `;
@@ -66,17 +202,19 @@ export const deleteRoutine = /* GraphQL */ `
       days
       sections {
         items {
+          id
           name
           sub
-          id
           createdAt
           updatedAt
           routineSectionsId
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
+      userRoutinesId
     }
   }
 `;
@@ -86,6 +224,7 @@ export const createSection = /* GraphQL */ `
     $condition: ModelSectionConditionInput
   ) {
     createSection(input: $input, condition: $condition) {
+      id
       name
       sub
       routine {
@@ -96,8 +235,10 @@ export const createSection = /* GraphQL */ `
         sections {
           nextToken
         }
+        notes
         createdAt
         updatedAt
+        userRoutinesId
       }
       workouts {
         items {
@@ -106,13 +247,17 @@ export const createSection = /* GraphQL */ `
           sub
           type
           notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
           createdAt
           updatedAt
+          userWorkoutsId
           sectionWorkoutsId
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
       routineSectionsId
@@ -125,6 +270,7 @@ export const updateSection = /* GraphQL */ `
     $condition: ModelSectionConditionInput
   ) {
     updateSection(input: $input, condition: $condition) {
+      id
       name
       sub
       routine {
@@ -135,8 +281,10 @@ export const updateSection = /* GraphQL */ `
         sections {
           nextToken
         }
+        notes
         createdAt
         updatedAt
+        userRoutinesId
       }
       workouts {
         items {
@@ -145,13 +293,17 @@ export const updateSection = /* GraphQL */ `
           sub
           type
           notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
           createdAt
           updatedAt
+          userWorkoutsId
           sectionWorkoutsId
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
       routineSectionsId
@@ -164,6 +316,7 @@ export const deleteSection = /* GraphQL */ `
     $condition: ModelSectionConditionInput
   ) {
     deleteSection(input: $input, condition: $condition) {
+      id
       name
       sub
       routine {
@@ -174,8 +327,10 @@ export const deleteSection = /* GraphQL */ `
         sections {
           nextToken
         }
+        notes
         createdAt
         updatedAt
+        userRoutinesId
       }
       workouts {
         items {
@@ -184,13 +339,17 @@ export const deleteSection = /* GraphQL */ `
           sub
           type
           notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
           createdAt
           updatedAt
+          userWorkoutsId
           sectionWorkoutsId
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
       routineSectionsId
@@ -209,10 +368,11 @@ export const createWorkout = /* GraphQL */ `
       type
       logs {
         items {
+          id
           name
           timestamp
           notes
-          id
+          units
           createdAt
           updatedAt
           workoutLogsId
@@ -220,8 +380,13 @@ export const createWorkout = /* GraphQL */ `
         nextToken
       }
       notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
       createdAt
       updatedAt
+      userWorkoutsId
       sectionWorkoutsId
     }
   }
@@ -238,10 +403,11 @@ export const updateWorkout = /* GraphQL */ `
       type
       logs {
         items {
+          id
           name
           timestamp
           notes
-          id
+          units
           createdAt
           updatedAt
           workoutLogsId
@@ -249,8 +415,13 @@ export const updateWorkout = /* GraphQL */ `
         nextToken
       }
       notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
       createdAt
       updatedAt
+      userWorkoutsId
       sectionWorkoutsId
     }
   }
@@ -267,10 +438,11 @@ export const deleteWorkout = /* GraphQL */ `
       type
       logs {
         items {
+          id
           name
           timestamp
           notes
-          id
+          units
           createdAt
           updatedAt
           workoutLogsId
@@ -278,8 +450,13 @@ export const deleteWorkout = /* GraphQL */ `
         nextToken
       }
       notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
       createdAt
       updatedAt
+      userWorkoutsId
       sectionWorkoutsId
     }
   }
@@ -290,13 +467,16 @@ export const createLog = /* GraphQL */ `
     $condition: ModelLogConditionInput
   ) {
     createLog(input: $input, condition: $condition) {
+      id
       name
       timestamp
       sets {
         items {
+          id
           weight
           reps
-          id
+          duration
+          units
           createdAt
           updatedAt
           logSetsId
@@ -304,7 +484,7 @@ export const createLog = /* GraphQL */ `
         nextToken
       }
       notes
-      id
+      units
       createdAt
       updatedAt
       workoutLogsId
@@ -317,13 +497,16 @@ export const updateLog = /* GraphQL */ `
     $condition: ModelLogConditionInput
   ) {
     updateLog(input: $input, condition: $condition) {
+      id
       name
       timestamp
       sets {
         items {
+          id
           weight
           reps
-          id
+          duration
+          units
           createdAt
           updatedAt
           logSetsId
@@ -331,7 +514,7 @@ export const updateLog = /* GraphQL */ `
         nextToken
       }
       notes
-      id
+      units
       createdAt
       updatedAt
       workoutLogsId
@@ -344,13 +527,16 @@ export const deleteLog = /* GraphQL */ `
     $condition: ModelLogConditionInput
   ) {
     deleteLog(input: $input, condition: $condition) {
+      id
       name
       timestamp
       sets {
         items {
+          id
           weight
           reps
-          id
+          duration
+          units
           createdAt
           updatedAt
           logSetsId
@@ -358,7 +544,7 @@ export const deleteLog = /* GraphQL */ `
         nextToken
       }
       notes
-      id
+      units
       createdAt
       updatedAt
       workoutLogsId
@@ -371,9 +557,11 @@ export const createSet = /* GraphQL */ `
     $condition: ModelSetConditionInput
   ) {
     createSet(input: $input, condition: $condition) {
+      id
       weight
       reps
-      id
+      duration
+      units
       createdAt
       updatedAt
       logSetsId
@@ -386,9 +574,11 @@ export const updateSet = /* GraphQL */ `
     $condition: ModelSetConditionInput
   ) {
     updateSet(input: $input, condition: $condition) {
+      id
       weight
       reps
-      id
+      duration
+      units
       createdAt
       updatedAt
       logSetsId
@@ -401,9 +591,11 @@ export const deleteSet = /* GraphQL */ `
     $condition: ModelSetConditionInput
   ) {
     deleteSet(input: $input, condition: $condition) {
+      id
       weight
       reps
-      id
+      duration
+      units
       createdAt
       updatedAt
       logSetsId

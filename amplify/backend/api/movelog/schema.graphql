@@ -39,6 +39,7 @@ type Routine @model {
 }
 
 type Section @model {
+  id: ID!
   name: String!
   sub: String!
   routine: Routine @belongsTo
@@ -52,21 +53,25 @@ type Workout @model {
   type: WorkoutType!
   logs: [Log] @hasMany
   notes: String
-  units: WorkoutUnitType # for lifts
+  units: WorkoutUnitType
   targetSetRange: [Int]
   targetRepRange: [Int]
   targetDurationRange: [Int]
 }
 
 type Log @model {
+  id: ID!
   name: String!
   timestamp: AWSTimestamp
   sets: [Set] @hasMany
   notes: String
+  units: WorkoutUnitType
 }
 
 type Set @model {
+  id: ID!
   weight: Int
   reps: Int
   duration: Int
+  units: WorkoutUnitType
 }

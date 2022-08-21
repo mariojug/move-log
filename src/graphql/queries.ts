@@ -2,6 +2,70 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      sub
+      workouts {
+        items {
+          id
+          name
+          sub
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          sectionWorkoutsId
+        }
+        nextToken
+      }
+      routines {
+        items {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+        }
+        nextToken
+      }
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        sub
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        id
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getRoutine = /* GraphQL */ `
   query GetRoutine($id: ID!) {
     getRoutine(id: $id) {
@@ -11,17 +75,19 @@ export const getRoutine = /* GraphQL */ `
       days
       sections {
         items {
+          id
           name
           sub
-          id
           createdAt
           updatedAt
           routineSectionsId
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
+      userRoutinesId
     }
   }
 `;
@@ -40,8 +106,10 @@ export const listRoutines = /* GraphQL */ `
         sections {
           nextToken
         }
+        notes
         createdAt
         updatedAt
+        userRoutinesId
       }
       nextToken
     }
@@ -50,6 +118,7 @@ export const listRoutines = /* GraphQL */ `
 export const getSection = /* GraphQL */ `
   query GetSection($id: ID!) {
     getSection(id: $id) {
+      id
       name
       sub
       routine {
@@ -60,8 +129,10 @@ export const getSection = /* GraphQL */ `
         sections {
           nextToken
         }
+        notes
         createdAt
         updatedAt
+        userRoutinesId
       }
       workouts {
         items {
@@ -70,13 +141,17 @@ export const getSection = /* GraphQL */ `
           sub
           type
           notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
           createdAt
           updatedAt
+          userWorkoutsId
           sectionWorkoutsId
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
       routineSectionsId
@@ -91,6 +166,7 @@ export const listSections = /* GraphQL */ `
   ) {
     listSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
+        id
         name
         sub
         routine {
@@ -98,13 +174,14 @@ export const listSections = /* GraphQL */ `
           name
           sub
           days
+          notes
           createdAt
           updatedAt
+          userRoutinesId
         }
         workouts {
           nextToken
         }
-        id
         createdAt
         updatedAt
         routineSectionsId
@@ -122,10 +199,11 @@ export const getWorkout = /* GraphQL */ `
       type
       logs {
         items {
+          id
           name
           timestamp
           notes
-          id
+          units
           createdAt
           updatedAt
           workoutLogsId
@@ -133,8 +211,13 @@ export const getWorkout = /* GraphQL */ `
         nextToken
       }
       notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
       createdAt
       updatedAt
+      userWorkoutsId
       sectionWorkoutsId
     }
   }
@@ -155,8 +238,13 @@ export const listWorkouts = /* GraphQL */ `
           nextToken
         }
         notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
         createdAt
         updatedAt
+        userWorkoutsId
         sectionWorkoutsId
       }
       nextToken
@@ -166,13 +254,16 @@ export const listWorkouts = /* GraphQL */ `
 export const getLog = /* GraphQL */ `
   query GetLog($id: ID!) {
     getLog(id: $id) {
+      id
       name
       timestamp
       sets {
         items {
+          id
           weight
           reps
-          id
+          duration
+          units
           createdAt
           updatedAt
           logSetsId
@@ -180,7 +271,7 @@ export const getLog = /* GraphQL */ `
         nextToken
       }
       notes
-      id
+      units
       createdAt
       updatedAt
       workoutLogsId
@@ -195,13 +286,14 @@ export const listLogs = /* GraphQL */ `
   ) {
     listLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
+        id
         name
         timestamp
         sets {
           nextToken
         }
         notes
-        id
+        units
         createdAt
         updatedAt
         workoutLogsId
@@ -213,9 +305,11 @@ export const listLogs = /* GraphQL */ `
 export const getSet = /* GraphQL */ `
   query GetSet($id: ID!) {
     getSet(id: $id) {
+      id
       weight
       reps
-      id
+      duration
+      units
       createdAt
       updatedAt
       logSetsId
@@ -230,9 +324,11 @@ export const listSets = /* GraphQL */ `
   ) {
     listSets(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
+        id
         weight
         reps
-        id
+        duration
+        units
         createdAt
         updatedAt
         logSetsId

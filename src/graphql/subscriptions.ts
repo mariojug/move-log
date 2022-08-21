@@ -2,6 +2,129 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
+    onCreateUser(filter: $filter) {
+      sub
+      workouts {
+        items {
+          id
+          name
+          sub
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          sectionWorkoutsId
+        }
+        nextToken
+      }
+      routines {
+        items {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+        }
+        nextToken
+      }
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
+    onUpdateUser(filter: $filter) {
+      sub
+      workouts {
+        items {
+          id
+          name
+          sub
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          sectionWorkoutsId
+        }
+        nextToken
+      }
+      routines {
+        items {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+        }
+        nextToken
+      }
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
+    onDeleteUser(filter: $filter) {
+      sub
+      workouts {
+        items {
+          id
+          name
+          sub
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          sectionWorkoutsId
+        }
+        nextToken
+      }
+      routines {
+        items {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+        }
+        nextToken
+      }
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateRoutine = /* GraphQL */ `
   subscription OnCreateRoutine($filter: ModelSubscriptionRoutineFilterInput) {
     onCreateRoutine(filter: $filter) {
@@ -11,17 +134,19 @@ export const onCreateRoutine = /* GraphQL */ `
       days
       sections {
         items {
+          id
           name
           sub
-          id
           createdAt
           updatedAt
           routineSectionsId
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
+      userRoutinesId
     }
   }
 `;
@@ -34,17 +159,19 @@ export const onUpdateRoutine = /* GraphQL */ `
       days
       sections {
         items {
+          id
           name
           sub
-          id
           createdAt
           updatedAt
           routineSectionsId
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
+      userRoutinesId
     }
   }
 `;
@@ -57,23 +184,26 @@ export const onDeleteRoutine = /* GraphQL */ `
       days
       sections {
         items {
+          id
           name
           sub
-          id
           createdAt
           updatedAt
           routineSectionsId
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
+      userRoutinesId
     }
   }
 `;
 export const onCreateSection = /* GraphQL */ `
   subscription OnCreateSection($filter: ModelSubscriptionSectionFilterInput) {
     onCreateSection(filter: $filter) {
+      id
       name
       sub
       routine {
@@ -84,8 +214,10 @@ export const onCreateSection = /* GraphQL */ `
         sections {
           nextToken
         }
+        notes
         createdAt
         updatedAt
+        userRoutinesId
       }
       workouts {
         items {
@@ -94,13 +226,17 @@ export const onCreateSection = /* GraphQL */ `
           sub
           type
           notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
           createdAt
           updatedAt
+          userWorkoutsId
           sectionWorkoutsId
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
       routineSectionsId
@@ -110,6 +246,7 @@ export const onCreateSection = /* GraphQL */ `
 export const onUpdateSection = /* GraphQL */ `
   subscription OnUpdateSection($filter: ModelSubscriptionSectionFilterInput) {
     onUpdateSection(filter: $filter) {
+      id
       name
       sub
       routine {
@@ -120,8 +257,10 @@ export const onUpdateSection = /* GraphQL */ `
         sections {
           nextToken
         }
+        notes
         createdAt
         updatedAt
+        userRoutinesId
       }
       workouts {
         items {
@@ -130,13 +269,17 @@ export const onUpdateSection = /* GraphQL */ `
           sub
           type
           notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
           createdAt
           updatedAt
+          userWorkoutsId
           sectionWorkoutsId
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
       routineSectionsId
@@ -146,6 +289,7 @@ export const onUpdateSection = /* GraphQL */ `
 export const onDeleteSection = /* GraphQL */ `
   subscription OnDeleteSection($filter: ModelSubscriptionSectionFilterInput) {
     onDeleteSection(filter: $filter) {
+      id
       name
       sub
       routine {
@@ -156,8 +300,10 @@ export const onDeleteSection = /* GraphQL */ `
         sections {
           nextToken
         }
+        notes
         createdAt
         updatedAt
+        userRoutinesId
       }
       workouts {
         items {
@@ -166,13 +312,17 @@ export const onDeleteSection = /* GraphQL */ `
           sub
           type
           notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
           createdAt
           updatedAt
+          userWorkoutsId
           sectionWorkoutsId
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
       routineSectionsId
@@ -188,10 +338,11 @@ export const onCreateWorkout = /* GraphQL */ `
       type
       logs {
         items {
+          id
           name
           timestamp
           notes
-          id
+          units
           createdAt
           updatedAt
           workoutLogsId
@@ -199,8 +350,13 @@ export const onCreateWorkout = /* GraphQL */ `
         nextToken
       }
       notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
       createdAt
       updatedAt
+      userWorkoutsId
       sectionWorkoutsId
     }
   }
@@ -214,10 +370,11 @@ export const onUpdateWorkout = /* GraphQL */ `
       type
       logs {
         items {
+          id
           name
           timestamp
           notes
-          id
+          units
           createdAt
           updatedAt
           workoutLogsId
@@ -225,8 +382,13 @@ export const onUpdateWorkout = /* GraphQL */ `
         nextToken
       }
       notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
       createdAt
       updatedAt
+      userWorkoutsId
       sectionWorkoutsId
     }
   }
@@ -240,10 +402,11 @@ export const onDeleteWorkout = /* GraphQL */ `
       type
       logs {
         items {
+          id
           name
           timestamp
           notes
-          id
+          units
           createdAt
           updatedAt
           workoutLogsId
@@ -251,8 +414,13 @@ export const onDeleteWorkout = /* GraphQL */ `
         nextToken
       }
       notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
       createdAt
       updatedAt
+      userWorkoutsId
       sectionWorkoutsId
     }
   }
@@ -260,13 +428,16 @@ export const onDeleteWorkout = /* GraphQL */ `
 export const onCreateLog = /* GraphQL */ `
   subscription OnCreateLog($filter: ModelSubscriptionLogFilterInput) {
     onCreateLog(filter: $filter) {
+      id
       name
       timestamp
       sets {
         items {
+          id
           weight
           reps
-          id
+          duration
+          units
           createdAt
           updatedAt
           logSetsId
@@ -274,7 +445,7 @@ export const onCreateLog = /* GraphQL */ `
         nextToken
       }
       notes
-      id
+      units
       createdAt
       updatedAt
       workoutLogsId
@@ -284,13 +455,16 @@ export const onCreateLog = /* GraphQL */ `
 export const onUpdateLog = /* GraphQL */ `
   subscription OnUpdateLog($filter: ModelSubscriptionLogFilterInput) {
     onUpdateLog(filter: $filter) {
+      id
       name
       timestamp
       sets {
         items {
+          id
           weight
           reps
-          id
+          duration
+          units
           createdAt
           updatedAt
           logSetsId
@@ -298,7 +472,7 @@ export const onUpdateLog = /* GraphQL */ `
         nextToken
       }
       notes
-      id
+      units
       createdAt
       updatedAt
       workoutLogsId
@@ -308,13 +482,16 @@ export const onUpdateLog = /* GraphQL */ `
 export const onDeleteLog = /* GraphQL */ `
   subscription OnDeleteLog($filter: ModelSubscriptionLogFilterInput) {
     onDeleteLog(filter: $filter) {
+      id
       name
       timestamp
       sets {
         items {
+          id
           weight
           reps
-          id
+          duration
+          units
           createdAt
           updatedAt
           logSetsId
@@ -322,7 +499,7 @@ export const onDeleteLog = /* GraphQL */ `
         nextToken
       }
       notes
-      id
+      units
       createdAt
       updatedAt
       workoutLogsId
@@ -332,9 +509,11 @@ export const onDeleteLog = /* GraphQL */ `
 export const onCreateSet = /* GraphQL */ `
   subscription OnCreateSet($filter: ModelSubscriptionSetFilterInput) {
     onCreateSet(filter: $filter) {
+      id
       weight
       reps
-      id
+      duration
+      units
       createdAt
       updatedAt
       logSetsId
@@ -344,9 +523,11 @@ export const onCreateSet = /* GraphQL */ `
 export const onUpdateSet = /* GraphQL */ `
   subscription OnUpdateSet($filter: ModelSubscriptionSetFilterInput) {
     onUpdateSet(filter: $filter) {
+      id
       weight
       reps
-      id
+      duration
+      units
       createdAt
       updatedAt
       logSetsId
@@ -356,9 +537,11 @@ export const onUpdateSet = /* GraphQL */ `
 export const onDeleteSet = /* GraphQL */ `
   subscription OnDeleteSet($filter: ModelSubscriptionSetFilterInput) {
     onDeleteSet(filter: $filter) {
+      id
       weight
       reps
-      id
+      duration
+      units
       createdAt
       updatedAt
       logSetsId
