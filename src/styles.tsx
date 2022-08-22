@@ -10,4 +10,7 @@ export const SharedStyles = StyleSheet.create({
     fontWeight: "bold",
     paddingVertical: 20,
   },
+  textLink: {
+    color: theme.textLinkColor,
+  },
 });

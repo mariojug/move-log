@@ -2,12 +2,12 @@ import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { WorkoutsStackParamList } from "../../navigation/Workouts";
+import type { HomeStackParamList } from "../../navigation/Home";
 
 import { theme } from "../../theme";
 import { SharedStyles } from "../../styles";
 
-type RoutineProps = NativeStackScreenProps<WorkoutsStackParamList, "Routine">;
+type RoutineProps = NativeStackScreenProps<HomeStackParamList, "Routine">;
 
 const Routine: React.FC<RoutineProps> = ({ navigation, route }) => {
   const params = route.params;

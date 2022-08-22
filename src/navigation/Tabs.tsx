@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Icon from "react-native-vector-icons/Ionicons";
 
-import Workouts from "./Workouts";
+import Home from "./Home";
 import Settings from "./Settings";
 
 import { theme } from "../theme";
@@ -24,7 +24,7 @@ const BottomNavbar: React.FC = () => {
     >
       <Tab.Screen
         name="Workouts"
-        component={Workouts}
+        component={Home}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={styles.tabIconView}>

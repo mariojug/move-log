@@ -4,19 +4,18 @@ import {
   View,
   ScrollView,
   TouchableHighlight,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 
-import { SafeAreaView } from "react-native-safe-area-context";
-
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { WorkoutsStackParamList } from "../../navigation/Workouts";
+import type { HomeStackParamList } from "../../navigation/Home";
 
 import { SharedStyles } from "../../styles";
 
 import FeatherIcon from "react-native-vector-icons/Feather";
 
-type RoutinesProps = NativeStackScreenProps<WorkoutsStackParamList, "Routines">;
+type RoutinesProps = NativeStackScreenProps<HomeStackParamList, "Routines">;
 
 const Routines: React.FC<RoutinesProps> = ({ navigation }: RoutinesProps) => {
   const [routineComponents, setRoutineComponents] = useState([]);
