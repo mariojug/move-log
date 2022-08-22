@@ -1,44 +1,56 @@
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import React from "react";
 
+import { Control, Controller, FieldValues } from "react-hook-form";
+
 import { theme } from "../theme";
 
 type CustomInputProps = {
+  name: string;
+  control: Control<FieldValues, any>;
   placeholder: string | undefined;
-  value: string | undefined;
-  setValue: ((text: string) => void) | undefined;
   secureTextEntry?: boolean | false;
   autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
-  dataDetectorTypes?:
-    | "phoneNumber"
-    | "link"
-    | "address"
-    | "calendarEvent"
-    | "none"
-    | "all";
+  rules?: object | {};
 };
 
 const CustomInput: React.FC<CustomInputProps> = ({
+  name,
+  control,
   placeholder,
-  value,
-  setValue,
   secureTextEntry,
   autoCapitalize,
-  dataDetectorTypes,
+  rules,
 }: CustomInputProps) => {
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder={placeholder}
-        style={styles.input}
-        value={value}
-        onChangeText={setValue}
-        secureTextEntry={secureTextEntry}
-        autoCapitalize={autoCapitalize}
-        autoCorrect={false}
-        dataDetectorTypes={dataDetectorTypes || "all"}
-      />
-    </View>
+    <Controller
+      name={name}
+      control={control}
+      rules={rules}
+      render={({
+        field: { value, onChange, onBlur },
+        fieldState: { error },
+      }) => (
+        <>
+          <View style={[styles.container, styles.container_ERROR]}>
+            <TextInput
+              placeholder={placeholder}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              secureTextEntry={secureTextEntry}
+              autoCapitalize={autoCapitalize}
+              autoCorrect={false}
+            />
+          </View>
+          {error && (
+            <Text style={{ color: "red", alignSelf: "stretch" }}>
+              {error.message || "Error"}
+            </Text>
+          )}
+        </>
+      )}
+    />
   );
 };
 
@@ -54,5 +66,7 @@ const styles = StyleSheet.create({
     padding: theme.buttonPadding,
     marginVertical: theme.inputButtonMarginVertical,
   },
-  input: {},
+  container_ERROR: {
+    borderColor: "red",
+  },
 });

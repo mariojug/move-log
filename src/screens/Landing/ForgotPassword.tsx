@@ -1,14 +1,23 @@
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import React, { useState, useEffect } from "react";
 
+import { useForm } from "react-hook-form";
+
 import { theme } from "../../theme";
 
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 
-const ForgotPassword = () => {
-  const [username, setUsername] = useState("");
-  const [code, setCode] = useState("");
+import type { LandingStackParamList } from "../../navigation/Landing";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+type ForgotPasswordProps = NativeStackScreenProps<
+  LandingStackParamList,
+  "ForgotPassword"
+>;
+
+const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
+  const { control, handleSubmit } = useForm();
 
   const handlePressSendLink = () => {};
 
@@ -17,20 +26,28 @@ const ForgotPassword = () => {
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Forgot password?</Text>
         <CustomInput
+          name="username"
+          control={control}
           placeholder="Username"
-          value={username}
-          setValue={setUsername}
           autoCapitalize="none"
           secureTextEntry={false}
+          rules={{
+            required: "Username is required",
+            minLength: {
+              value: 3,
+              message: "Username should be at least three (3) characters long",
+            },
+            maxLength: {
+              value: 24,
+              message:
+                "Username should be at most twenty-four (24) characters long",
+            },
+          }}
         />
-        <CustomInput
-          placeholder="Confirmation code"
-          value={code}
-          setValue={setCode}
-          autoCapitalize="none"
-          secureTextEntry={false}
+        <CustomButton
+          text="Send reset link"
+          onPress={handleSubmit(handlePressSendLink)}
         />
-        <CustomButton text="Send reset link" onPress={handlePressSendLink} />
       </ScrollView>
     </SafeAreaView>
   );

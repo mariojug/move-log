@@ -6,13 +6,22 @@ import { SharedStyles } from "../../styles";
 
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+import { useForm } from "react-hook-form";
 
 import SocialSigninButtons from "./SocialSigninButtons";
 
-const SignIn = ({ navigation }: NativeStackScreenProps) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+import type { LandingStackParamList } from "../../navigation/Landing";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+type SignInProps = NativeStackScreenProps<LandingStackParamList, "SignIn">;
+
+const SignIn = ({ navigation }: SignInProps) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const handlePressSignIn = () => {};
 
@@ -20,26 +29,46 @@ const SignIn = ({ navigation }: NativeStackScreenProps) => {
 
   const handlePressForgotPassword = () => navigation.navigate("ForgotPassword");
 
-  useEffect(() => console.log(username, password), [username, password]);
-
   return (
     <SafeAreaView style={styles.root}>
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Move Log</Text>
         <CustomInput
+          name="username"
+          control={control}
           placeholder="Username"
-          value={username}
-          setValue={setUsername}
           autoCapitalize="none"
           secureTextEntry={false}
+          rules={{
+            required: "Username is required",
+            minLength: {
+              value: 3,
+              message: "Username should be at least three (3) characters long",
+            },
+            maxLength: {
+              value: 24,
+              message:
+                "Username should be at most twenty-four (24) characters long",
+            },
+          }}
         />
         <CustomInput
+          name="password"
+          control={control}
           placeholder="Password"
-          value={password}
-          setValue={setPassword}
           secureTextEntry
+          rules={{
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Password should be minimum eight (8) characters long",
+            },
+          }}
         />
-        <CustomButton text="Sign In" onPress={handlePressSignIn} />
+        <CustomButton
+          text="Sign In"
+          onPress={handleSubmit(handlePressSignIn)}
+        />
         <CustomButton
           text="Forgot password?"
           onPress={handlePressForgotPassword}

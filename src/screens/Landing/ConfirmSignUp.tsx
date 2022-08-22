@@ -3,35 +3,59 @@ import React, { useState, useEffect } from "react";
 
 import { theme } from "../../theme";
 
-import SocialSigninButtons from "./SocialSigninButtons";
+import { useForm } from "react-hook-form";
 
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 
-const ConfirmSignUp = () => {
-  const [username, setUsername] = useState("");
-  const [code, setCode] = useState("");
+import type { LandingStackParamList } from "../../navigation/Landing";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+type ConfirmSignUpProps = NativeStackScreenProps<
+  LandingStackParamList,
+  "ConfirmSignUp"
+>;
+
+const ConfirmSignUp = ({ navigation }: ConfirmSignUpProps) => {
+  const { control, handleSubmit } = useForm();
 
   const handlePressConfirm = () => {};
+
   return (
     <SafeAreaView style={styles.root}>
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Confirm Sign Up</Text>
         <CustomInput
+          name="username"
+          control={control}
           placeholder="Username"
-          value={username}
-          setValue={setUsername}
           autoCapitalize="none"
           secureTextEntry={false}
+          rules={{
+            required: "Username is required",
+            minLength: {
+              value: 3,
+              message: "Username should be at least three (3) characters long",
+            },
+            maxLength: {
+              value: 24,
+              message:
+                "Username should be at most twenty-four (24) characters long",
+            },
+          }}
         />
         <CustomInput
+          name="code"
+          control={control}
           placeholder="Confirmation code"
-          value={code}
-          setValue={setCode}
           autoCapitalize="none"
           secureTextEntry={false}
+          rules={{ required: "Confirmation code is required" }}
         />
-        <CustomButton text="Confirm account" onPress={handlePressConfirm} />
+        <CustomButton
+          text="Confirm account"
+          onPress={handleSubmit(handlePressConfirm)}
+        />
       </ScrollView>
     </SafeAreaView>
   );

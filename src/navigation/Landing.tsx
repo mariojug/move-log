@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -10,6 +10,14 @@ import ForgotPassword from "../screens/Landing/ForgotPassword";
 import ResetPassword from "../screens/Landing/ResetPassword";
 
 const LandingStack = createNativeStackNavigator();
+
+export type LandingStackParamList = {
+  SignIn: undefined;
+  SignUp: undefined;
+  ConfirmSignUp: undefined;
+  ForgotPassword: undefined;
+  ResetPassword: undefined;
+};
 
 const Landing = () => {
   return (
