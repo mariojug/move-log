@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 
 import SocialSigninButtons from "./SocialSigninButtons";
 
+import { USERNAME_REGEX } from "../../utils/Signin";
 import type { LandingStackParamList } from "../../navigation/Landing";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -50,6 +51,11 @@ const SignIn = ({ navigation }: SignInProps) => {
               message:
                 "Username should be at most twenty-four (24) characters long",
             },
+            pattern: {
+              value: USERNAME_REGEX,
+              message:
+                "Username is invalid. Use only alphanumeric characters (a-z, A-Z, 0-9)",
+            },
           }}
         />
         <CustomInput
@@ -61,7 +67,7 @@ const SignIn = ({ navigation }: SignInProps) => {
             required: "Password is required",
             minLength: {
               value: 8,
-              message: "Password should be minimum eight (8) characters long",
+              message: "Password should be at least eight (8) characters long",
             },
           }}
         />

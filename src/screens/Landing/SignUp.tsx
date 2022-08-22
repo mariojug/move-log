@@ -1,5 +1,6 @@
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import React, { useState, useEffect } from "react";
+import { StackActions } from "@react-navigation/native";
 
 import { useForm } from "react-hook-form";
 
@@ -8,10 +9,16 @@ import { SharedStyles } from "../../styles";
 
 import SocialSigninButtons from "./SocialSigninButtons";
 
+import BackButtonHeader from "../../components/BackButtonHeader";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 
-import { EMAIL_REGEX, passwordIsValid } from "../../utils/Signin";
+import {
+  EMAIL_REGEX,
+  USERNAME_REGEX,
+  NUMBER_REGEX,
+  passwordIsValid,
+} from "../../utils/Signin";
 
 import type { LandingStackParamList } from "../../navigation/Landing";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -22,16 +29,17 @@ const SignUp = ({ navigation }: SignUpProps) => {
   const { control, handleSubmit, watch } = useForm();
 
   // TODO: implement form validation
-  const handlePressSignUp = () => {
-    navigation.navigate("ConfirmSignUp");
-  };
+  const handlePressSignUp = () => navigation.navigate("ConfirmSignUp");
 
   const handlePressTerms = () => {};
 
   const handlePressPrivacy = () => {};
 
+  const handlePressBackScreen = () => navigation.dispatch(StackActions.pop(1));
+
   return (
     <SafeAreaView style={styles.root}>
+      <BackButtonHeader onPress={handlePressBackScreen} />
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Create an account</Text>
         <CustomInput
@@ -50,6 +58,11 @@ const SignUp = ({ navigation }: SignUpProps) => {
               value: 24,
               message:
                 "Username should be at most twenty-four (24) characters long",
+            },
+            pattern: {
+              value: USERNAME_REGEX,
+              message:
+                "Username is invalid. Use only alphanumeric characters (a-z, A-Z, 0-9)",
             },
           }}
         />
@@ -70,7 +83,17 @@ const SignUp = ({ navigation }: SignUpProps) => {
           placeholder="Phone number"
           autoCapitalize="none"
           secureTextEntry={false}
-          rules={{ required: "Phone number is required" }}
+          rules={{
+            required: "Phone number is required",
+            minLength: {
+              value: 10,
+              message: "Phone number should have at least 10 digits",
+            },
+            pattern: {
+              value: NUMBER_REGEX,
+              message: "Phone number should contain digits (0-9) only",
+            },
+          }}
         />
         <CustomInput
           name="password"
@@ -81,11 +104,13 @@ const SignUp = ({ navigation }: SignUpProps) => {
             required: "Password is required",
             minLength: {
               value: 8,
-              message: "Password should be minimum eight (8) characters long",
+              message: "Password should be at least eight (8) characters long",
             },
-            validate: (value: string) =>
-              passwordIsValid(value) ||
-              "Passwords must contain a mix of lowercase letters, uppercase letters, and special characters ( !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~)",
+            validate: {
+              chars: (value: string) =>
+                passwordIsValid(value) &&
+                "Passwords must contain a mix of lowercase letters, uppercase letters, and special characters ( !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~)",
+            },
           }}
         />
         <CustomInput
@@ -97,7 +122,7 @@ const SignUp = ({ navigation }: SignUpProps) => {
             required: "Password is required",
             minLength: {
               value: 8,
-              message: "Password should be minimum eight (8) characters long",
+              message: "Password should be at least eight (8) characters long",
             },
             validate: (value: string) =>
               value === watch("password") || "Passwords do not match",

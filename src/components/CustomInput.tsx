@@ -32,7 +32,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         fieldState: { error },
       }) => (
         <>
-          <View style={[styles.container, styles.container_ERROR]}>
+          <View style={[styles.container, error ? styles.container_ERROR : {}]}>
             <TextInput
               placeholder={placeholder}
               value={value}

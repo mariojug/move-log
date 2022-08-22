@@ -1,10 +1,14 @@
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import React, { useState, useEffect } from "react";
+import { StackActions } from "@react-navigation/native";
 
 import { useForm } from "react-hook-form";
 
 import { theme } from "../../theme";
 
+import { USERNAME_REGEX } from "../../utils/Signin";
+
+import BackButtonHeader from "../../components/BackButtonHeader";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 
@@ -19,10 +23,13 @@ type ForgotPasswordProps = NativeStackScreenProps<
 const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
   const { control, handleSubmit } = useForm();
 
-  const handlePressSendLink = () => {};
+  const handlePressSendLink = () => navigation.navigate("ResetPassword");
+
+  const handlePressBackScreen = () => navigation.dispatch(StackActions.pop(1));
 
   return (
     <SafeAreaView style={styles.root}>
+      <BackButtonHeader onPress={handlePressBackScreen} />
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Forgot password?</Text>
         <CustomInput
@@ -41,6 +48,11 @@ const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
               value: 24,
               message:
                 "Username should be at most twenty-four (24) characters long",
+            },
+            pattern: {
+              value: USERNAME_REGEX,
+              message:
+                "Username is invalid. Use only alphanumeric characters (a-z, A-Z, 0-9)",
             },
           }}
         />

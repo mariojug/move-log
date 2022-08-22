@@ -3,5 +3,8 @@ export const passwordIsValid = (inputtxt: string) => {
   return inputtxt.match(passw);
 };
 
-export const EMAIL_REGEX =
-  /^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/;
+export const EMAIL_REGEX = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+
+export const USERNAME_REGEX = /[a-zA-Z\d_]/;
+
+export const NUMBER_REGEX = /[\d]/;

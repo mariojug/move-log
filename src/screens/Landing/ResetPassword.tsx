@@ -1,10 +1,12 @@
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import React, { useState, useEffect } from "react";
+import { StackActions } from "@react-navigation/native";
 
 import { useForm } from "react-hook-form";
 
 import { theme } from "../../theme";
 
+import BackButtonHeader from "../../components/BackButtonHeader";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 
@@ -23,8 +25,11 @@ const ResetPassword = ({ navigation }: ResetPasswordProps) => {
 
   const handlePressSubmit = () => {};
 
+  const handlePressBackScreen = () => navigation.dispatch(StackActions.pop(1));
+
   return (
     <SafeAreaView style={styles.root}>
+      <BackButtonHeader onPress={handlePressBackScreen} />
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Forgot password?</Text>
         <CustomInput
@@ -45,7 +50,7 @@ const ResetPassword = ({ navigation }: ResetPasswordProps) => {
             required: "Password is required",
             minLength: {
               value: 8,
-              message: "Password should be minimum eight (8) characters long",
+              message: "Password should be at least eight (8) characters long",
             },
             validate: (value: string) =>
               passwordIsValid(value) ||
@@ -62,7 +67,7 @@ const ResetPassword = ({ navigation }: ResetPasswordProps) => {
             required: "Password is required",
             minLength: {
               value: 8,
-              message: "Password should be minimum eight (8) characters long",
+              message: "Password should be at least eight (8) characters long",
             },
             validate: (value: string) =>
               value === watch("password") || "Passwords do not match",

@@ -1,5 +1,6 @@
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import React, { useState, useEffect } from "react";
+import { StackActions } from "@react-navigation/native";
 
 import { theme } from "../../theme";
 
@@ -19,7 +20,7 @@ type ConfirmSignUpProps = NativeStackScreenProps<
 const ConfirmSignUp = ({ navigation }: ConfirmSignUpProps) => {
   const { control, handleSubmit } = useForm();
 
-  const handlePressConfirm = () => {};
+  const handlePressConfirm = () => navigation.dispatch(StackActions.popToTop());
 
   return (
     <SafeAreaView style={styles.root}>
@@ -41,6 +42,11 @@ const ConfirmSignUp = ({ navigation }: ConfirmSignUpProps) => {
               value: 24,
               message:
                 "Username should be at most twenty-four (24) characters long",
+            },
+            pattern: {
+              value: USERNAME_REGEX,
+              message:
+                "Username is invalid. Use only alphanumeric characters (a-z, A-Z, 0-9)",
             },
           }}
         />
