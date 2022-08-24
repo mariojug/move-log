@@ -1,16 +1,17 @@
-import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import { Text, SafeAreaView, ScrollView } from "react-native";
+import React from "react";
 import { StackActions } from "@react-navigation/native";
 
 import { useForm } from "react-hook-form";
 
-import { theme } from "../../theme";
+import { styles } from "./styles";
 
 import BackButtonHeader from "../../components/BackButtonHeader";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 
-import { EMAIL_REGEX, passwordIsValid } from "../../utils/Signin";
+import { passwordIsValid } from "../../utils/Signin";
+import { PasswordRegex } from "../../regex";
 
 import type { LandingStackParamList } from "../../navigation/Landing";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -25,11 +26,11 @@ const ResetPassword = ({ navigation }: ResetPasswordProps) => {
 
   const handlePressSubmit = () => {};
 
-  const handlePressBackScreen = () => navigation.dispatch(StackActions.pop(1));
-
   return (
     <SafeAreaView style={styles.root}>
-      <BackButtonHeader onPress={handlePressBackScreen} />
+      <BackButtonHeader
+        onPress={() => navigation.dispatch(StackActions.pop(1))}
+      />
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Forgot password?</Text>
         <CustomInput
@@ -52,9 +53,11 @@ const ResetPassword = ({ navigation }: ResetPasswordProps) => {
               value: 8,
               message: "Password should be at least eight (8) characters long",
             },
-            validate: (value: string) =>
-              passwordIsValid(value) ||
-              "Passwords must contain a mix of lowercase letters, uppercase letters, and special characters ( !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~)",
+            pattern: {
+              value: PasswordRegex,
+              message:
+                "Passwords must contain a mix of lowercase letters, uppercase letters, and special characters (#?!@$%^&*-)",
+            },
           }}
         />
         <CustomInput
@@ -80,23 +83,3 @@ const ResetPassword = ({ navigation }: ResetPasswordProps) => {
 };
 
 export default ResetPassword;
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: theme.screenBg,
-    height: "100%",
-    alignItems: "center",
-  },
-  container: { padding: 10 },
-  header: {
-    paddingHorizontal: 15,
-    paddingVertical: 25,
-    fontSize: 36,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  link: {
-    color: theme.textLinkColor,
-  },
-});

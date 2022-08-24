@@ -3,20 +3,26 @@ import React from "react";
 
 import CustomButton from "../../components/CustomButton";
 
-const SocialSigninButtons = () => {
+type SocialSignInButtonsProps = {
+  type?: "signup" | "signin";
+};
+
+const SocialSignInButtons: React.FC<SocialSignInButtonsProps> = ({
+  type,
+}: SocialSignInButtonsProps) => {
   const handlePressSignInWithGoogle = () => {};
   const handlePressSignInWithApple = () => {};
   return (
     <View style={styles.signupView}>
       <CustomButton
-        text="Sign In with Google"
+        text={`Sign ${type === "signup" ? "up" : "in"} with Google`}
         onPress={handlePressSignInWithGoogle}
         bgColor="#FAE9EA"
         fgColor="#DD4D44"
         iconName="google"
       />
       <CustomButton
-        text="Sign In with Apple"
+        text={`Sign ${type === "signup" ? "up" : "in"} with Apple`}
         onPress={handlePressSignInWithApple}
         bgColor="#e3e3e3"
         fgColor="#363636"
@@ -26,7 +32,7 @@ const SocialSigninButtons = () => {
   );
 };
 
-export default SocialSigninButtons;
+export default SocialSignInButtons;
 
 const styles = StyleSheet.create({
   signupView: {

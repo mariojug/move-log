@@ -1,30 +1,42 @@
-import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import { Text, SafeAreaView, ScrollView, Alert } from "react-native";
+import React, { useState } from "react";
+import { useForm, FieldValues } from "react-hook-form";
 
-import { theme } from "../../theme";
-import { SharedStyles } from "../../styles";
+import { Auth } from "aws-amplify";
 
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 
-import { useForm } from "react-hook-form";
+import BackButtonHeader from "../../components/BackButtonHeader";
+import SocialSignInButtons from "./SocialSignInButtons";
 
-import SocialSigninButtons from "./SocialSigninButtons";
-
-import { USERNAME_REGEX } from "../../utils/Signin";
+import { UsernameRegex } from "../../regex";
 import type { LandingStackParamList } from "../../navigation/Landing";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+import { styles } from "./styles";
 
 type SignInProps = NativeStackScreenProps<LandingStackParamList, "SignIn">;
 
 const SignIn = ({ navigation }: SignInProps) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { control, handleSubmit } = useForm<FieldValues>();
 
-  const handlePressSignIn = () => {};
+  const [loading, setLoading] = useState(false);
+
+  const handlePressSignIn = async (data: FieldValues) => {
+    if (loading) return;
+
+    setLoading(true);
+    try {
+      const response = await Auth.signIn(data.username, data.password);
+      console.log(response);
+      navigation.getParent()?.navigate("Main");
+    } catch (err: any) {
+      console.log("error", err, err.code);
+      Alert.alert("Login error", err.message);
+    }
+    setLoading(false);
+  };
 
   const handlePressSignUp = () => navigation.navigate("SignUp");
 
@@ -32,14 +44,13 @@ const SignIn = ({ navigation }: SignInProps) => {
 
   return (
     <SafeAreaView style={styles.root}>
+      <BackButtonHeader hideButton />
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Move Log</Text>
         <CustomInput
           name="username"
           control={control}
           placeholder="Username"
-          autoCapitalize="none"
-          secureTextEntry={false}
           rules={{
             required: "Username is required",
             minLength: {
@@ -52,7 +63,7 @@ const SignIn = ({ navigation }: SignInProps) => {
                 "Username should be at most twenty-four (24) characters long",
             },
             pattern: {
-              value: USERNAME_REGEX,
+              value: UsernameRegex,
               message:
                 "Username is invalid. Use only alphanumeric characters (a-z, A-Z, 0-9)",
             },
@@ -72,7 +83,7 @@ const SignIn = ({ navigation }: SignInProps) => {
           }}
         />
         <CustomButton
-          text="Sign In"
+          text={loading ? "Loading..." : "Sign In"}
           onPress={handleSubmit(handlePressSignIn)}
         />
         <CustomButton
@@ -80,7 +91,7 @@ const SignIn = ({ navigation }: SignInProps) => {
           onPress={handlePressForgotPassword}
           type="secondary"
         />
-        <SocialSigninButtons />
+        <SocialSignInButtons />
         <CustomButton
           text="Don't have an account? Create one"
           onPress={handlePressSignUp}
@@ -92,20 +103,3 @@ const SignIn = ({ navigation }: SignInProps) => {
 };
 
 export default SignIn;
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: theme.screenBg,
-    height: "100%",
-    alignItems: "center",
-  },
-  container: { padding: 10 },
-  header: {
-    paddingHorizontal: 15,
-    paddingVertical: 25,
-    fontSize: 36,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-});

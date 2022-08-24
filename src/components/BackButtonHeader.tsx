@@ -4,15 +4,21 @@ import React from "react";
 import Icon from "react-native-vector-icons/AntDesign";
 
 type BackButtonHeaderProps = {
-  onPress: ((event: GestureResponderEvent) => void) | undefined;
+  onPress?: ((event: GestureResponderEvent) => void) | undefined;
+  hideButton?: boolean | false;
 };
 
 const BackButtonHeader: React.FC<BackButtonHeaderProps> = ({
   onPress,
+  hideButton,
 }: BackButtonHeaderProps) => {
   return (
     <View style={styles.container}>
-      <Icon name="left" onPress={onPress} style={styles.icon} />
+      {hideButton ? (
+        <Text style={styles.icon}>&nbsp;</Text>
+      ) : (
+        <Icon name="left" onPress={onPress} style={styles.icon} />
+      )}
     </View>
   );
 };
@@ -24,9 +30,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     width: "100%",
     paddingLeft: 24,
-    marginVertical: 12,
+    marginTop: 12,
+    marginBottom: 6,
+    backgroundColor: "none",
   },
   icon: {
     fontSize: 18,
+    fontWeight: "bold",
   },
 });

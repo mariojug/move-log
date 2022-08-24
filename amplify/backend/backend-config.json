@@ -1,16 +1,17 @@
 {
   "function": {},
   "auth": {
-    "movelog": {
+    "movelogabb1775e": {
       "service": "Cognito",
-      "serviceType": "managed",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
+      "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
         "usernameAttributes": [],
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "NAME"
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,

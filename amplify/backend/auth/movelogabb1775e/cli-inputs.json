@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "movelog_identitypool_b49bf020",
+    "identityPoolName": "movelogabb1775e_identitypool_abb1775e",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "movelob49bf020",
-    "userPoolName": "movelog_userpool_b49bf020",
+    "resourceNameTruncated": "moveloabb1775e",
+    "userPoolName": "movelogabb1775e_userpool_abb1775e",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -20,7 +20,8 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email"
+      "email",
+      "name"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
@@ -31,12 +32,16 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "movelob49bf020_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "moveloabb1775e_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
+    "sharedId": "abb1775e",
+    "resourceName": "movelogabb1775e",
     "authSelections": "identityPoolAndUserPool",
-    "resourceName": "movelog",
-    "sharedId": "b49bf020",
+    "useDefault": "default",
+    "triggers": {},
+    "userPoolGroupList": [],
     "serviceName": "Cognito",
-    "useDefault": "manual"
+    "usernameCaseSensitive": false,
+    "useEnabledMfas": true
   }
 }

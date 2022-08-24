@@ -1,17 +1,26 @@
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import React from "react";
 
-import { Control, Controller, FieldValues } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 
 import { theme } from "../theme";
 
 type CustomInputProps = {
   name: string;
-  control: Control<FieldValues, any>;
+  control: Control<any, any>;
   placeholder: string | undefined;
   secureTextEntry?: boolean | false;
   autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
   rules?: object | {};
+  disabled?: boolean | false;
+  keyboardType?:
+    | "default"
+    | "number-pad"
+    | "decimal-pad"
+    | "numeric"
+    | "email-address"
+    | "phone-pad"
+    | "url";
 };
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -21,6 +30,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
   secureTextEntry,
   autoCapitalize,
   rules,
+  disabled,
+  keyboardType,
 }: CustomInputProps) => {
   return (
     <Controller
@@ -38,9 +49,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              secureTextEntry={secureTextEntry}
-              autoCapitalize={autoCapitalize}
+              secureTextEntry={secureTextEntry ? secureTextEntry : false}
+              autoCapitalize={autoCapitalize ? autoCapitalize : "none"}
               autoCorrect={false}
+              editable={!disabled}
+              keyboardType={keyboardType}
             />
           </View>
           {error && (

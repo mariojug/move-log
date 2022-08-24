@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Amplify } from "aws-amplify";
 import config from "./src/aws-exports";
 
-import Tabs from "./src/navigation/Tabs";
+import Main from "./src/navigation/Main";
 
 import { theme } from "./src/theme";
 import Landing from "./src/navigation/Landing";
@@ -26,7 +26,7 @@ const App = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Landing" component={Landing} />
-        <Stack.Screen name="Main" component={Tabs} />
+        <Stack.Screen name="Main" component={Main} />
       </Stack.Navigator>
     </NavigationContainer>
   );

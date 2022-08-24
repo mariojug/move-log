@@ -1,16 +1,17 @@
-import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import { Text, SafeAreaView, ScrollView, Alert } from "react-native";
+import React from "react";
 import { StackActions } from "@react-navigation/native";
-
 import { useForm } from "react-hook-form";
 
-import { theme } from "../../theme";
+import { Auth } from "aws-amplify";
 
-import { USERNAME_REGEX } from "../../utils/Signin";
+import { UsernameRegex } from "../../regex";
 
 import BackButtonHeader from "../../components/BackButtonHeader";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
+
+import { styles } from "./styles";
 
 import type { LandingStackParamList } from "../../navigation/Landing";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -25,11 +26,11 @@ const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
 
   const handlePressSendLink = () => navigation.navigate("ResetPassword");
 
-  const handlePressBackScreen = () => navigation.dispatch(StackActions.pop(1));
-
   return (
     <SafeAreaView style={styles.root}>
-      <BackButtonHeader onPress={handlePressBackScreen} />
+      <BackButtonHeader
+        onPress={() => navigation.dispatch(StackActions.pop(1))}
+      />
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Forgot password?</Text>
         <CustomInput
@@ -50,7 +51,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
                 "Username should be at most twenty-four (24) characters long",
             },
             pattern: {
-              value: USERNAME_REGEX,
+              value: UsernameRegex,
               message:
                 "Username is invalid. Use only alphanumeric characters (a-z, A-Z, 0-9)",
             },
@@ -66,23 +67,3 @@ const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
 };
 
 export default ForgotPassword;
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: theme.screenBg,
-    height: "100%",
-    alignItems: "center",
-  },
-  container: { padding: 10 },
-  header: {
-    paddingHorizontal: 15,
-    paddingVertical: 25,
-    fontSize: 36,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  link: {
-    color: theme.textLinkColor,
-  },
-});
