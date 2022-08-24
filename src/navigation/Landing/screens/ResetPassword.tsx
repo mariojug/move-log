@@ -4,16 +4,15 @@ import { StackActions } from "@react-navigation/native";
 
 import { useForm } from "react-hook-form";
 
-import { styles } from "./styles";
+import styles from "../styles";
 
-import BackButtonHeader from "../../components/BackButtonHeader";
-import CustomInput from "../../components/CustomInput";
-import CustomButton from "../../components/CustomButton";
+import BackButtonHeader from "../../../components/BackButtonHeader";
+import CustomInput from "../../../components/CustomInput";
+import CustomButton from "../../../components/CustomButton";
 
-import { passwordIsValid } from "../../utils/Signin";
-import { PasswordRegex } from "../../regex";
+import { PasswordRegex } from "../../../regex";
 
-import type { LandingStackParamList } from "../../navigation/Landing";
+import type { LandingStackParamList } from "..";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type ResetPasswordProps = NativeStackScreenProps<

@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { theme } from "./theme";
+import { theme } from "../../../theme";
 
-export const SharedStyles = StyleSheet.create({
+export default StyleSheet.create({
   pageHeaderView: {
     alignItems: "center",
     justifyContent: "center",

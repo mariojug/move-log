@@ -4,17 +4,18 @@ import { useForm, FieldValues } from "react-hook-form";
 
 import { Auth } from "aws-amplify";
 
-import CustomInput from "../../components/CustomInput";
-import CustomButton from "../../components/CustomButton";
+import CustomInput from "../../../components/CustomInput";
+import CustomButton from "../../../components/CustomButton";
 
-import BackButtonHeader from "../../components/BackButtonHeader";
+import BackButtonHeader from "../../../components/BackButtonHeader";
 import SocialSignInButtons from "./SocialSignInButtons";
 
-import { UsernameRegex } from "../../regex";
-import type { LandingStackParamList } from "../../navigation/Landing";
+import { UsernameRegex } from "../../../regex";
+import type { LandingStackParamList } from "../../../navigation/Landing";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import { styles } from "./styles";
+import styles from "../styles";
+import { StackActions } from "@react-navigation/native";
 
 type SignInProps = NativeStackScreenProps<LandingStackParamList, "SignIn">;
 
@@ -30,7 +31,7 @@ const SignIn = ({ navigation }: SignInProps) => {
     try {
       const response = await Auth.signIn(data.username, data.password);
       console.log(response);
-      navigation.getParent()?.navigate("Main");
+      navigation.getParent()?.dispatch(StackActions.replace("Main"));
     } catch (err: any) {
       console.log("error", err, err.code);
       Alert.alert("Login error", err.message);

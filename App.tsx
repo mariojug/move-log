@@ -15,7 +15,12 @@ import Landing from "./src/navigation/Landing";
 
 Amplify.configure(config);
 
-const Stack = createNativeStackNavigator();
+export type AppStackParamList = {
+  Landing: undefined;
+  Main: undefined;
+};
+
+const Stack = createNativeStackNavigator<AppStackParamList>();
 
 const App = () => {
   return (

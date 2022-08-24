@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -7,23 +7,35 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Home from "./Home";
 import Settings from "./Settings";
 
-import { theme } from "../theme";
+import { theme } from "../../theme";
 
-type TabParamList = {
-  Workouts: undefined;
+import { AppStackParamList } from "../../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+type MainProps = NativeStackScreenProps<AppStackParamList, "Main">;
+
+export type MainStackParamList = {
+  Home: undefined;
   Settings: undefined;
 };
 
-const Tab = createBottomTabNavigator<TabParamList>();
+const MainStack = createBottomTabNavigator<MainStackParamList>();
 
-const BottomNavbar: React.FC = () => {
+const Main: React.FC<MainProps> = ({ navigation }) => {
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        e.preventDefault();
+      }),
+    [navigation]
+  );
   return (
-    <Tab.Navigator
-      initialRouteName="Workouts"
+    <MainStack.Navigator
+      initialRouteName="Home"
       screenOptions={{ headerShown: false }}
     >
-      <Tab.Screen
-        name="Workouts"
+      <MainStack.Screen
+        name="Home"
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -36,14 +48,14 @@ const BottomNavbar: React.FC = () => {
               <Text
                 style={focused ? styles.tabLabelFocus : styles.tabLabelBlur}
               >
-                Workouts
+                Home
               </Text>
             </View>
           ),
           tabBarLabel: "",
         }}
       />
-      <Tab.Screen
+      <MainStack.Screen
         name="Settings"
         component={Settings}
         options={{
@@ -64,7 +76,7 @@ const BottomNavbar: React.FC = () => {
           tabBarLabel: "",
         }}
       />
-    </Tab.Navigator>
+    </MainStack.Navigator>
   );
 };
 
@@ -72,7 +84,7 @@ const styles = StyleSheet.create({
   tabIconView: {
     alignItems: "center",
     justifyContent: "center",
-    top: 10,
+    top: 20,
   },
   tabLabelFocus: {
     color: theme.focusColor,
@@ -85,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomNavbar;
+export default Main;

@@ -2,9 +2,9 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { HomeStackParamList } from "../../navigation/Home";
+import type { HomeStackParamList } from "..";
 
-import { SharedStyles } from "../../styles";
+import styles from "..";
 
 type RoutinesProps = NativeStackScreenProps<HomeStackParamList, "Workout">;
 
@@ -35,4 +35,4 @@ const Workout = () => {
 
 export default Workout;
 
-const styles = StyleSheet.create({});
+const workoutStyles = StyleSheet.create({});

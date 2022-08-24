@@ -2,10 +2,10 @@ import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { HomeStackParamList } from "../../navigation/Home";
+import type { HomeStackParamList } from "..";
 
-import { theme } from "../../theme";
-import { SharedStyles } from "../../styles";
+import { theme } from "../../../../theme";
+import styles from "../styles";
 
 type RoutineProps = NativeStackScreenProps<HomeStackParamList, "Routine">;
 
@@ -32,8 +32,8 @@ const Routine: React.FC<RoutineProps> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView>
-      <View style={SharedStyles.pageHeaderView}>
-        <Text style={SharedStyles.pageHeaderText}>{params.name}</Text>
+      <View style={styles.pageHeaderView}>
+        <Text style={styles.pageHeaderText}>{params.name}</Text>
       </View>
       {/* TODO: show routine notes, day(s) when it should be performed */}
       {/* TODO: separate workout components by sections */}
@@ -47,4 +47,4 @@ const Routine: React.FC<RoutineProps> = ({ navigation, route }) => {
 
 export default Routine;
 
-const styles = StyleSheet.create({});
+const routineStyles = StyleSheet.create({});

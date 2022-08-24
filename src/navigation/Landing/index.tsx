@@ -1,16 +1,13 @@
 import { StyleSheet } from "react-native";
 import React from "react";
 
-import {
-  createNativeStackNavigator,
-  NativeStackScreenProps,
-} from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import SignIn from "../screens/Landing/SignIn";
-import SignUp from "../screens/Landing/SignUp";
-import ConfirmSignUp from "../screens/Landing/ConfirmSignUp";
-import ForgotPassword from "../screens/Landing/ForgotPassword";
-import ResetPassword from "../screens/Landing/ResetPassword";
+import SignIn from "./screens/SignIn";
+import SignUp from "./screens/SignUp";
+import ConfirmSignUp from "./screens/ConfirmSignUp";
+import ForgotPassword from "./screens/ForgotPassword";
+import ResetPassword from "./screens/ResetPassword";
 
 export type LandingStackParamList = {
   SignIn: undefined;

@@ -9,16 +9,25 @@ import {
 import React, { useState, useEffect } from "react";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import type { HomeStackParamList } from "../../navigation/Home";
+import type { HomeStackParamList } from "..";
 
-import { SharedStyles } from "../../styles";
+import styles from "../styles";
 
 import FeatherIcon from "react-native-vector-icons/Feather";
 
 type RoutinesProps = NativeStackScreenProps<HomeStackParamList, "Routines">;
 
 const Routines: React.FC<RoutinesProps> = ({ navigation }: RoutinesProps) => {
-  const [routineComponents, setRoutineComponents] = useState([]);
+  const [routineComponents, setRoutineComponents] = useState([
+    <TouchableHighlight key="test" onPress={() => handleTouchRoutine("hello")}>
+      <View style={routinesStyles.pressWrapper}>
+        <Text style={routinesStyles.pressText}>Hello</Text>
+        <View>
+          <FeatherIcon name="chevrons-right" size={30} />
+        </View>
+      </View>
+    </TouchableHighlight>,
+  ]);
 
   // TODO: make api request to pull all user data containing routines
   useEffect(() => {}, []);
@@ -37,28 +46,19 @@ const Routines: React.FC<RoutinesProps> = ({ navigation }: RoutinesProps) => {
 
   return (
     <SafeAreaView>
-      <View>
-        <View style={SharedStyles.pageHeaderView}>
-          <Text style={SharedStyles.pageHeaderText}>My routines</Text>
+      <ScrollView>
+        <View style={styles.pageHeaderView}>
+          <Text style={styles.pageHeaderText}>My routines</Text>
         </View>
-        <ScrollView>
-          <TouchableHighlight onPress={() => handleTouchRoutine("hello")}>
-            <View style={styles.pressWrapper}>
-              <Text style={styles.pressText}>Hello</Text>
-              <View>
-                <FeatherIcon name="chevrons-right" size={30} />
-              </View>
-            </View>
-          </TouchableHighlight>
-        </ScrollView>
-      </View>
+        <View>{routineComponents}</View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default Routines;
 
-const styles = StyleSheet.create({
+const routinesStyles = StyleSheet.create({
   pressWrapper: {
     backgroundColor: "#eee",
     flexDirection: "row",

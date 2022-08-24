@@ -5,15 +5,15 @@ import { useForm } from "react-hook-form";
 
 import { Auth } from "aws-amplify";
 
-import { UsernameRegex } from "../../regex";
+import { UsernameRegex } from "../../../regex";
 
-import BackButtonHeader from "../../components/BackButtonHeader";
-import CustomInput from "../../components/CustomInput";
-import CustomButton from "../../components/CustomButton";
+import BackButtonHeader from "../../../components/BackButtonHeader";
+import CustomInput from "../../../components/CustomInput";
+import CustomButton from "../../../components/CustomButton";
 
-import { styles } from "./styles";
+import styles from "../styles";
 
-import type { LandingStackParamList } from "../../navigation/Landing";
+import type { LandingStackParamList } from "..";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type ForgotPasswordProps = NativeStackScreenProps<

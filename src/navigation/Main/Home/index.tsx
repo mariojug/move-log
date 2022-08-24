@@ -1,11 +1,16 @@
 import { StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 
-import Routines from "../screens/Home/Routines";
-import Routine from "../screens/Home/Routine";
-import Workout from "../screens/Home/Workout";
+import { MainStackParamList } from "..";
+
+import Routines from "./screens/Routines";
+import Routine from "./screens/Routine";
+import Workout from "./screens/Workout";
 
 export type HomeStackParamList = {
   Routines: undefined;
@@ -19,10 +24,12 @@ export type HomeStackParamList = {
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
+type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;
+
 // TODO: add logic to pull all routines belonging to a user and display each as link
 // TODO: add logic to create routines: name, notes, days of week (optional)
 // TODO: add logic to delete routines
-const Home: React.FC = () => {
+const Home: React.FC<HomeProps> = (props: HomeProps) => {
   return (
     <HomeStack.Navigator
       initialRouteName="Routines"

@@ -14,20 +14,20 @@ import { Auth } from "aws-amplify";
 
 import SocialSignInButtons from "./SocialSignInButtons";
 
-import BackButtonHeader from "../../components/BackButtonHeader";
-import CustomInput from "../../components/CustomInput";
-import CustomButton from "../../components/CustomButton";
+import BackButtonHeader from "../../../components/BackButtonHeader";
+import CustomInput from "../../../components/CustomInput";
+import CustomButton from "../../../components/CustomButton";
 
 import {
   EmailRegex,
   UsernameRegex,
   NumberRegex,
   PasswordRegex,
-} from "../../regex";
+} from "../../../regex";
 
-import { styles } from "./styles";
+import styles from "../styles";
 
-import type { LandingStackParamList } from "../../navigation/Landing";
+import type { LandingStackParamList } from "../.";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type SignUpProps = NativeStackScreenProps<LandingStackParamList, "SignUp">;
