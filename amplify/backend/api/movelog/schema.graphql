@@ -24,32 +24,60 @@ enum WorkoutUnitType {
 #   MODELS
 # =====================
 
-type User @model {
-  sub: String!
+type User
+  @model
+  @auth(rules: [{ allow: owner, operations: [read, create, delete, update] }]) {
+  id: ID! @primaryKey
+  username: String!
   workouts: [Workout] @hasMany
   routines: [Routine] @hasMany
 }
-type Routine @model {
-  id: ID!
+
+type Routine
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [read, create, delete, update] }
+      { allow: private, operations: [read, create, delete, update] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  user: User! @belongsTo
   name: String!
   sub: String!
   days: [Int]
   sections: [Section]! @hasMany
+  workouts: [Workout]! @manyToMany(relationName: "RoutineWorkout")
   notes: String
 }
 
-type Section @model {
-  id: ID!
+type Section
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [read, create, delete, update] }
+      { allow: private, operations: [read, create, delete, update] }
+    ]
+  ) {
+  id: ID! @primaryKey
   name: String!
-  sub: String!
   routine: Routine @belongsTo
-  workouts: [Workout] @hasMany
+  workouts: [Workout] @manyToMany(relationName: " SectionWorkout")
 }
 
-type Workout @model {
-  id: ID!
-  name: String!
-  sub: String!
+type Workout
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [read, create, delete, update] }
+      { allow: private, operations: [read, create, delete, update] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  name: String
+  user: User! @belongsTo
+  routines: [Routine]! @manyToMany(relationName: "RoutineWorkout")
+  sections: [Section]! @manyToMany(relationName: "SectionWorkout")
   type: WorkoutType!
   logs: [Log] @hasMany
   notes: String
@@ -59,17 +87,33 @@ type Workout @model {
   targetDurationRange: [Int]
 }
 
-type Log @model {
-  id: ID!
+type Log
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [read, create, delete, update] }
+      { allow: private, operations: [read, create, delete, update] }
+    ]
+  ) {
+  id: ID! @primaryKey
   name: String!
   timestamp: AWSTimestamp
+  workout: Workout @belongsTo
   sets: [Set] @hasMany
   notes: String
   units: WorkoutUnitType
 }
 
-type Set @model {
-  id: ID!
+type Set
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [read, create, delete, update] }
+      { allow: private, operations: [read, create, delete, update] }
+    ]
+  ) {
+  id: ID! @primaryKey
+  log: Log! @belongsTo
   weight: Int
   reps: Int
   duration: Int

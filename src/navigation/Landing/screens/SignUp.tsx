@@ -35,27 +35,24 @@ type SignUpProps = NativeStackScreenProps<LandingStackParamList, "SignUp">;
 const SignUp = ({ navigation }: SignUpProps) => {
   const { control, handleSubmit, watch } = useForm();
 
-  // TODO: implement form validation
   const handlePressSignUp = async (data: FieldValues) => {
     const { username, name, email, password, phoneArea, phoneNumber } = data;
-    navigation.navigate("ConfirmSignUp", { username });
 
-    // try {
-    //   const response = await Auth.signUp({
-    //     username,
-    //     password,
-    //     attributes: {
-    //       name,
-    //       email,
-    //       phone_number:
-    //         "+" + (phoneArea.trim() === "" ? "1" : phoneArea) + phoneNumber,
-    //     },
-    //   });
-    //   console.log(response);
-    //   navigation.navigate("ConfirmSignUp", { username });
-    // } catch (err: any) {
-    //   Alert.alert(err.message);
-    // }
+    try {
+      await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          name,
+          email,
+          phone_number:
+            "+" + (phoneArea.trim() === "" ? "1" : phoneArea) + phoneNumber,
+        },
+      });
+      navigation.navigate("ConfirmSignUp", { username });
+    } catch (err: any) {
+      Alert.alert(err.message);
+    }
   };
 
   const handlePressTerms = () => {};
@@ -169,11 +166,6 @@ const SignUp = ({ navigation }: SignUpProps) => {
               message:
                 "Password must contain a mix of lowercase letters, uppercase letters, and special characters (#?!@$%^&*-)",
             },
-            // validate: {
-            //   chars: (value: string) =>
-            //     passwordIsValid(value) &&
-            //     "Passwords must contain a mix of lowercase letters, uppercase letters, and special characters ( !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~)",
-            // },
           }}
         />
         <CustomInput

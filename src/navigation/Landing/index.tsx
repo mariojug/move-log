@@ -16,7 +16,9 @@ export type LandingStackParamList = {
     username: string;
   };
   ForgotPassword: undefined;
-  ResetPassword: undefined;
+  ResetPassword: {
+    username: string;
+  };
 };
 
 const LandingStack = createNativeStackNavigator<LandingStackParamList>();

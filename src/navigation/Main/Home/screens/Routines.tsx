@@ -7,13 +7,16 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
+import FeatherIcon from "react-native-vector-icons/Feather";
+
+import { API, graphqlOperation } from "aws-amplify";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { HomeStackParamList } from "..";
 
-import styles from "../styles";
+import { useUser } from "../../context/UserId";
 
-import FeatherIcon from "react-native-vector-icons/Feather";
+import styles from "../styles";
 
 type RoutinesProps = NativeStackScreenProps<HomeStackParamList, "Routines">;
 
@@ -29,15 +32,18 @@ const Routines: React.FC<RoutinesProps> = ({ navigation }: RoutinesProps) => {
     </TouchableHighlight>,
   ]);
 
+  const { userId } = useUser();
+
   // TODO: make api request to pull all user data containing routines
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(userId);
+  }, [userId]);
 
   const handleTouchRoutine = (routineId: string) => {
     console.log(routineId);
     navigation.navigate("Routine", {
       name: "routine name",
       id: routineId,
-      sub: "sub string",
     });
   };
 

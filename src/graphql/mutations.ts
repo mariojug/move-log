@@ -8,12 +8,12 @@ export const createUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     createUser(input: $input, condition: $condition) {
-      sub
+      id
+      username
       workouts {
         items {
           id
           name
-          sub
           type
           notes
           units
@@ -23,7 +23,7 @@ export const createUser = /* GraphQL */ `
           createdAt
           updatedAt
           userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
@@ -37,12 +37,13 @@ export const createUser = /* GraphQL */ `
           createdAt
           updatedAt
           userRoutinesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -52,12 +53,12 @@ export const updateUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     updateUser(input: $input, condition: $condition) {
-      sub
+      id
+      username
       workouts {
         items {
           id
           name
-          sub
           type
           notes
           units
@@ -67,7 +68,7 @@ export const updateUser = /* GraphQL */ `
           createdAt
           updatedAt
           userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
@@ -81,12 +82,13 @@ export const updateUser = /* GraphQL */ `
           createdAt
           updatedAt
           userRoutinesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -96,12 +98,12 @@ export const deleteUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     deleteUser(input: $input, condition: $condition) {
-      sub
+      id
+      username
       workouts {
         items {
           id
           name
-          sub
           type
           notes
           units
@@ -111,7 +113,7 @@ export const deleteUser = /* GraphQL */ `
           createdAt
           updatedAt
           userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
@@ -125,12 +127,13 @@ export const deleteUser = /* GraphQL */ `
           createdAt
           updatedAt
           userRoutinesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -141,6 +144,19 @@ export const createRoutine = /* GraphQL */ `
   ) {
     createRoutine(input: $input, condition: $condition) {
       id
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
       name
       sub
       days
@@ -148,10 +164,21 @@ export const createRoutine = /* GraphQL */ `
         items {
           id
           name
-          sub
           createdAt
           updatedAt
           routineSectionsId
+          owner
+        }
+        nextToken
+      }
+      workouts {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
       }
@@ -159,6 +186,7 @@ export const createRoutine = /* GraphQL */ `
       createdAt
       updatedAt
       userRoutinesId
+      owner
     }
   }
 `;
@@ -169,6 +197,19 @@ export const updateRoutine = /* GraphQL */ `
   ) {
     updateRoutine(input: $input, condition: $condition) {
       id
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
       name
       sub
       days
@@ -176,10 +217,21 @@ export const updateRoutine = /* GraphQL */ `
         items {
           id
           name
-          sub
           createdAt
           updatedAt
           routineSectionsId
+          owner
+        }
+        nextToken
+      }
+      workouts {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
       }
@@ -187,6 +239,7 @@ export const updateRoutine = /* GraphQL */ `
       createdAt
       updatedAt
       userRoutinesId
+      owner
     }
   }
 `;
@@ -197,6 +250,19 @@ export const deleteRoutine = /* GraphQL */ `
   ) {
     deleteRoutine(input: $input, condition: $condition) {
       id
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
       name
       sub
       days
@@ -204,10 +270,21 @@ export const deleteRoutine = /* GraphQL */ `
         items {
           id
           name
-          sub
           createdAt
           updatedAt
           routineSectionsId
+          owner
+        }
+        nextToken
+      }
+      workouts {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
       }
@@ -215,6 +292,7 @@ export const deleteRoutine = /* GraphQL */ `
       createdAt
       updatedAt
       userRoutinesId
+      owner
     }
   }
 `;
@@ -226,41 +304,45 @@ export const createSection = /* GraphQL */ `
     createSection(input: $input, condition: $condition) {
       id
       name
-      sub
       routine {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
         name
         sub
         days
         sections {
           nextToken
         }
+        workouts {
+          nextToken
+        }
         notes
         createdAt
         updatedAt
         userRoutinesId
+        owner
       }
       workouts {
         items {
           id
-          name
-          sub
-          type
-          notes
-          units
-          targetSetRange
-          targetRepRange
-          targetDurationRange
+          sectionID
+          workoutID
           createdAt
           updatedAt
-          userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
       createdAt
       updatedAt
       routineSectionsId
+      owner
     }
   }
 `;
@@ -272,41 +354,45 @@ export const updateSection = /* GraphQL */ `
     updateSection(input: $input, condition: $condition) {
       id
       name
-      sub
       routine {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
         name
         sub
         days
         sections {
           nextToken
         }
+        workouts {
+          nextToken
+        }
         notes
         createdAt
         updatedAt
         userRoutinesId
+        owner
       }
       workouts {
         items {
           id
-          name
-          sub
-          type
-          notes
-          units
-          targetSetRange
-          targetRepRange
-          targetDurationRange
+          sectionID
+          workoutID
           createdAt
           updatedAt
-          userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
       createdAt
       updatedAt
       routineSectionsId
+      owner
     }
   }
 `;
@@ -318,41 +404,45 @@ export const deleteSection = /* GraphQL */ `
     deleteSection(input: $input, condition: $condition) {
       id
       name
-      sub
       routine {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
         name
         sub
         days
         sections {
           nextToken
         }
+        workouts {
+          nextToken
+        }
         notes
         createdAt
         updatedAt
         userRoutinesId
+        owner
       }
       workouts {
         items {
           id
-          name
-          sub
-          type
-          notes
-          units
-          targetSetRange
-          targetRepRange
-          targetDurationRange
+          sectionID
+          workoutID
           createdAt
           updatedAt
-          userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
       createdAt
       updatedAt
       routineSectionsId
+      owner
     }
   }
 `;
@@ -364,7 +454,41 @@ export const createWorkout = /* GraphQL */ `
     createWorkout(input: $input, condition: $condition) {
       id
       name
-      sub
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      routines {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      sections {
+        items {
+          id
+          sectionID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       type
       logs {
         items {
@@ -376,6 +500,7 @@ export const createWorkout = /* GraphQL */ `
           createdAt
           updatedAt
           workoutLogsId
+          owner
         }
         nextToken
       }
@@ -387,7 +512,7 @@ export const createWorkout = /* GraphQL */ `
       createdAt
       updatedAt
       userWorkoutsId
-      sectionWorkoutsId
+      owner
     }
   }
 `;
@@ -399,7 +524,41 @@ export const updateWorkout = /* GraphQL */ `
     updateWorkout(input: $input, condition: $condition) {
       id
       name
-      sub
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      routines {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      sections {
+        items {
+          id
+          sectionID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       type
       logs {
         items {
@@ -411,6 +570,7 @@ export const updateWorkout = /* GraphQL */ `
           createdAt
           updatedAt
           workoutLogsId
+          owner
         }
         nextToken
       }
@@ -422,7 +582,7 @@ export const updateWorkout = /* GraphQL */ `
       createdAt
       updatedAt
       userWorkoutsId
-      sectionWorkoutsId
+      owner
     }
   }
 `;
@@ -434,7 +594,41 @@ export const deleteWorkout = /* GraphQL */ `
     deleteWorkout(input: $input, condition: $condition) {
       id
       name
-      sub
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      routines {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      sections {
+        items {
+          id
+          sectionID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       type
       logs {
         items {
@@ -446,6 +640,7 @@ export const deleteWorkout = /* GraphQL */ `
           createdAt
           updatedAt
           workoutLogsId
+          owner
         }
         nextToken
       }
@@ -457,7 +652,7 @@ export const deleteWorkout = /* GraphQL */ `
       createdAt
       updatedAt
       userWorkoutsId
-      sectionWorkoutsId
+      owner
     }
   }
 `;
@@ -470,6 +665,36 @@ export const createLog = /* GraphQL */ `
       id
       name
       timestamp
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
       sets {
         items {
           id
@@ -480,6 +705,7 @@ export const createLog = /* GraphQL */ `
           createdAt
           updatedAt
           logSetsId
+          owner
         }
         nextToken
       }
@@ -488,6 +714,7 @@ export const createLog = /* GraphQL */ `
       createdAt
       updatedAt
       workoutLogsId
+      owner
     }
   }
 `;
@@ -500,6 +727,36 @@ export const updateLog = /* GraphQL */ `
       id
       name
       timestamp
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
       sets {
         items {
           id
@@ -510,6 +767,7 @@ export const updateLog = /* GraphQL */ `
           createdAt
           updatedAt
           logSetsId
+          owner
         }
         nextToken
       }
@@ -518,6 +776,7 @@ export const updateLog = /* GraphQL */ `
       createdAt
       updatedAt
       workoutLogsId
+      owner
     }
   }
 `;
@@ -530,6 +789,36 @@ export const deleteLog = /* GraphQL */ `
       id
       name
       timestamp
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
       sets {
         items {
           id
@@ -540,6 +829,7 @@ export const deleteLog = /* GraphQL */ `
           createdAt
           updatedAt
           logSetsId
+          owner
         }
         nextToken
       }
@@ -548,6 +838,7 @@ export const deleteLog = /* GraphQL */ `
       createdAt
       updatedAt
       workoutLogsId
+      owner
     }
   }
 `;
@@ -558,6 +849,34 @@ export const createSet = /* GraphQL */ `
   ) {
     createSet(input: $input, condition: $condition) {
       id
+      log {
+        id
+        name
+        timestamp
+        workout {
+          id
+          name
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          owner
+        }
+        sets {
+          nextToken
+        }
+        notes
+        units
+        createdAt
+        updatedAt
+        workoutLogsId
+        owner
+      }
       weight
       reps
       duration
@@ -565,6 +884,7 @@ export const createSet = /* GraphQL */ `
       createdAt
       updatedAt
       logSetsId
+      owner
     }
   }
 `;
@@ -575,6 +895,34 @@ export const updateSet = /* GraphQL */ `
   ) {
     updateSet(input: $input, condition: $condition) {
       id
+      log {
+        id
+        name
+        timestamp
+        workout {
+          id
+          name
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          owner
+        }
+        sets {
+          nextToken
+        }
+        notes
+        units
+        createdAt
+        updatedAt
+        workoutLogsId
+        owner
+      }
       weight
       reps
       duration
@@ -582,6 +930,7 @@ export const updateSet = /* GraphQL */ `
       createdAt
       updatedAt
       logSetsId
+      owner
     }
   }
 `;
@@ -592,6 +941,34 @@ export const deleteSet = /* GraphQL */ `
   ) {
     deleteSet(input: $input, condition: $condition) {
       id
+      log {
+        id
+        name
+        timestamp
+        workout {
+          id
+          name
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          owner
+        }
+        sets {
+          nextToken
+        }
+        notes
+        units
+        createdAt
+        updatedAt
+        workoutLogsId
+        owner
+      }
       weight
       reps
       duration
@@ -599,6 +976,415 @@ export const deleteSet = /* GraphQL */ `
       createdAt
       updatedAt
       logSetsId
+      owner
+    }
+  }
+`;
+export const createRoutineWorkout = /* GraphQL */ `
+  mutation CreateRoutineWorkout(
+    $input: CreateRoutineWorkoutInput!
+    $condition: ModelRoutineWorkoutConditionInput
+  ) {
+    createRoutineWorkout(input: $input, condition: $condition) {
+      id
+      routineID
+      workoutID
+      routine {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        name
+        sub
+        days
+        sections {
+          nextToken
+        }
+        workouts {
+          nextToken
+        }
+        notes
+        createdAt
+        updatedAt
+        userRoutinesId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateRoutineWorkout = /* GraphQL */ `
+  mutation UpdateRoutineWorkout(
+    $input: UpdateRoutineWorkoutInput!
+    $condition: ModelRoutineWorkoutConditionInput
+  ) {
+    updateRoutineWorkout(input: $input, condition: $condition) {
+      id
+      routineID
+      workoutID
+      routine {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        name
+        sub
+        days
+        sections {
+          nextToken
+        }
+        workouts {
+          nextToken
+        }
+        notes
+        createdAt
+        updatedAt
+        userRoutinesId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteRoutineWorkout = /* GraphQL */ `
+  mutation DeleteRoutineWorkout(
+    $input: DeleteRoutineWorkoutInput!
+    $condition: ModelRoutineWorkoutConditionInput
+  ) {
+    deleteRoutineWorkout(input: $input, condition: $condition) {
+      id
+      routineID
+      workoutID
+      routine {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        name
+        sub
+        days
+        sections {
+          nextToken
+        }
+        workouts {
+          nextToken
+        }
+        notes
+        createdAt
+        updatedAt
+        userRoutinesId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const createSectionWorkout = /* GraphQL */ `
+  mutation CreateSectionWorkout(
+    $input: CreateSectionWorkoutInput!
+    $condition: ModelSectionWorkoutConditionInput
+  ) {
+    createSectionWorkout(input: $input, condition: $condition) {
+      id
+      sectionID
+      workoutID
+      section {
+        id
+        name
+        routine {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+          owner
+        }
+        workouts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        routineSectionsId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateSectionWorkout = /* GraphQL */ `
+  mutation UpdateSectionWorkout(
+    $input: UpdateSectionWorkoutInput!
+    $condition: ModelSectionWorkoutConditionInput
+  ) {
+    updateSectionWorkout(input: $input, condition: $condition) {
+      id
+      sectionID
+      workoutID
+      section {
+        id
+        name
+        routine {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+          owner
+        }
+        workouts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        routineSectionsId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteSectionWorkout = /* GraphQL */ `
+  mutation DeleteSectionWorkout(
+    $input: DeleteSectionWorkoutInput!
+    $condition: ModelSectionWorkoutConditionInput
+  ) {
+    deleteSectionWorkout(input: $input, condition: $condition) {
+      id
+      sectionID
+      workoutID
+      section {
+        id
+        name
+        routine {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+          owner
+        }
+        workouts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        routineSectionsId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;

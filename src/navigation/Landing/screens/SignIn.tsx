@@ -30,7 +30,6 @@ const SignIn = ({ navigation }: SignInProps) => {
     setLoading(true);
     try {
       const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
       navigation.getParent()?.dispatch(StackActions.replace("Main"));
     } catch (err: any) {
       console.log("error", err, err.code);

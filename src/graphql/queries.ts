@@ -5,12 +5,12 @@
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
-      sub
+      id
+      username
       workouts {
         items {
           id
           name
-          sub
           type
           notes
           units
@@ -20,7 +20,7 @@ export const getUser = /* GraphQL */ `
           createdAt
           updatedAt
           userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
@@ -34,33 +34,43 @@ export const getUser = /* GraphQL */ `
           createdAt
           updatedAt
           userRoutinesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const listUsers = /* GraphQL */ `
   query ListUsers(
+    $id: ID
     $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUsers(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
-        sub
+        id
+        username
         workouts {
           nextToken
         }
         routines {
           nextToken
         }
-        id
         createdAt
         updatedAt
+        owner
       }
       nextToken
     }
@@ -70,6 +80,19 @@ export const getRoutine = /* GraphQL */ `
   query GetRoutine($id: ID!) {
     getRoutine(id: $id) {
       id
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
       name
       sub
       days
@@ -77,10 +100,21 @@ export const getRoutine = /* GraphQL */ `
         items {
           id
           name
-          sub
           createdAt
           updatedAt
           routineSectionsId
+          owner
+        }
+        nextToken
+      }
+      workouts {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
       }
@@ -88,28 +122,48 @@ export const getRoutine = /* GraphQL */ `
       createdAt
       updatedAt
       userRoutinesId
+      owner
     }
   }
 `;
 export const listRoutines = /* GraphQL */ `
   query ListRoutines(
+    $id: ID
     $filter: ModelRoutineFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listRoutines(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listRoutines(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
         name
         sub
         days
         sections {
           nextToken
         }
+        workouts {
+          nextToken
+        }
         notes
         createdAt
         updatedAt
         userRoutinesId
+        owner
       }
       nextToken
     }
@@ -120,55 +174,66 @@ export const getSection = /* GraphQL */ `
     getSection(id: $id) {
       id
       name
-      sub
       routine {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
         name
         sub
         days
         sections {
           nextToken
         }
+        workouts {
+          nextToken
+        }
         notes
         createdAt
         updatedAt
         userRoutinesId
+        owner
       }
       workouts {
         items {
           id
-          name
-          sub
-          type
-          notes
-          units
-          targetSetRange
-          targetRepRange
-          targetDurationRange
+          sectionID
+          workoutID
           createdAt
           updatedAt
-          userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
       createdAt
       updatedAt
       routineSectionsId
+      owner
     }
   }
 `;
 export const listSections = /* GraphQL */ `
   query ListSections(
+    $id: ID
     $filter: ModelSectionFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listSections(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listSections(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         name
-        sub
         routine {
           id
           name
@@ -178,6 +243,7 @@ export const listSections = /* GraphQL */ `
           createdAt
           updatedAt
           userRoutinesId
+          owner
         }
         workouts {
           nextToken
@@ -185,6 +251,7 @@ export const listSections = /* GraphQL */ `
         createdAt
         updatedAt
         routineSectionsId
+        owner
       }
       nextToken
     }
@@ -195,7 +262,41 @@ export const getWorkout = /* GraphQL */ `
     getWorkout(id: $id) {
       id
       name
-      sub
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      routines {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      sections {
+        items {
+          id
+          sectionID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       type
       logs {
         items {
@@ -207,6 +308,7 @@ export const getWorkout = /* GraphQL */ `
           createdAt
           updatedAt
           workoutLogsId
+          owner
         }
         nextToken
       }
@@ -218,21 +320,41 @@ export const getWorkout = /* GraphQL */ `
       createdAt
       updatedAt
       userWorkoutsId
-      sectionWorkoutsId
+      owner
     }
   }
 `;
 export const listWorkouts = /* GraphQL */ `
   query ListWorkouts(
+    $id: ID
     $filter: ModelWorkoutFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listWorkouts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listWorkouts(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         name
-        sub
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
         type
         logs {
           nextToken
@@ -245,7 +367,7 @@ export const listWorkouts = /* GraphQL */ `
         createdAt
         updatedAt
         userWorkoutsId
-        sectionWorkoutsId
+        owner
       }
       nextToken
     }
@@ -257,6 +379,36 @@ export const getLog = /* GraphQL */ `
       id
       name
       timestamp
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
       sets {
         items {
           id
@@ -267,6 +419,7 @@ export const getLog = /* GraphQL */ `
           createdAt
           updatedAt
           logSetsId
+          owner
         }
         nextToken
       }
@@ -275,20 +428,43 @@ export const getLog = /* GraphQL */ `
       createdAt
       updatedAt
       workoutLogsId
+      owner
     }
   }
 `;
 export const listLogs = /* GraphQL */ `
   query ListLogs(
+    $id: ID
     $filter: ModelLogFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listLogs(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         name
         timestamp
+        workout {
+          id
+          name
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          owner
+        }
         sets {
           nextToken
         }
@@ -297,6 +473,7 @@ export const listLogs = /* GraphQL */ `
         createdAt
         updatedAt
         workoutLogsId
+        owner
       }
       nextToken
     }
@@ -306,6 +483,34 @@ export const getSet = /* GraphQL */ `
   query GetSet($id: ID!) {
     getSet(id: $id) {
       id
+      log {
+        id
+        name
+        timestamp
+        workout {
+          id
+          name
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          owner
+        }
+        sets {
+          nextToken
+        }
+        notes
+        units
+        createdAt
+        updatedAt
+        workoutLogsId
+        owner
+      }
       weight
       reps
       duration
@@ -313,18 +518,38 @@ export const getSet = /* GraphQL */ `
       createdAt
       updatedAt
       logSetsId
+      owner
     }
   }
 `;
 export const listSets = /* GraphQL */ `
   query ListSets(
+    $id: ID
     $filter: ModelSetFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listSets(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listSets(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
+        log {
+          id
+          name
+          timestamp
+          notes
+          units
+          createdAt
+          updatedAt
+          workoutLogsId
+          owner
+        }
         weight
         reps
         duration
@@ -332,6 +557,222 @@ export const listSets = /* GraphQL */ `
         createdAt
         updatedAt
         logSetsId
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getRoutineWorkout = /* GraphQL */ `
+  query GetRoutineWorkout($id: ID!) {
+    getRoutineWorkout(id: $id) {
+      id
+      routineID
+      workoutID
+      routine {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        name
+        sub
+        days
+        sections {
+          nextToken
+        }
+        workouts {
+          nextToken
+        }
+        notes
+        createdAt
+        updatedAt
+        userRoutinesId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listRoutineWorkouts = /* GraphQL */ `
+  query ListRoutineWorkouts(
+    $filter: ModelRoutineWorkoutFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listRoutineWorkouts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        routineID
+        workoutID
+        routine {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+          owner
+        }
+        workout {
+          id
+          name
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          owner
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getSectionWorkout = /* GraphQL */ `
+  query GetSectionWorkout($id: ID!) {
+    getSectionWorkout(id: $id) {
+      id
+      sectionID
+      workoutID
+      section {
+        id
+        name
+        routine {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+          owner
+        }
+        workouts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        routineSectionsId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listSectionWorkouts = /* GraphQL */ `
+  query ListSectionWorkouts(
+    $filter: ModelSectionWorkoutFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSectionWorkouts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        sectionID
+        workoutID
+        section {
+          id
+          name
+          createdAt
+          updatedAt
+          routineSectionsId
+          owner
+        }
+        workout {
+          id
+          name
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          owner
+        }
+        createdAt
+        updatedAt
+        owner
       }
       nextToken
     }

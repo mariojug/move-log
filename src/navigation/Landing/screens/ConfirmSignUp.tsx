@@ -3,7 +3,9 @@ import React from "react";
 import { StackActions } from "@react-navigation/native";
 import { FieldValues, useForm } from "react-hook-form";
 
-import { Auth } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
+
+import { createUser } from "../../../graphql/mutations";
 
 import BackButtonHeader from "../../../components/BackButtonHeader";
 import CustomInput from "../../../components/CustomInput";
@@ -31,6 +33,7 @@ const ConfirmSignUp = ({ route, navigation }: ConfirmSignUpProps) => {
       Alert.alert("Success", "You have successfully signed up for an account");
       setTimeout(() => navigation.dispatch(StackActions.popToTop()), 2000);
     } catch (err: any) {
+      console.log(err);
       Alert.alert(err.message);
     }
   };

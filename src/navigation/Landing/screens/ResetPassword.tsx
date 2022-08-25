@@ -1,8 +1,9 @@
-import { Text, SafeAreaView, ScrollView } from "react-native";
+import { Text, SafeAreaView, ScrollView, Alert } from "react-native";
 import React from "react";
 import { StackActions } from "@react-navigation/native";
+import { FieldValues, useForm } from "react-hook-form";
 
-import { useForm } from "react-hook-form";
+import { Auth } from "aws-amplify";
 
 import styles from "../styles";
 
@@ -20,10 +21,27 @@ type ResetPasswordProps = NativeStackScreenProps<
   "ResetPassword"
 >;
 
-const ResetPassword = ({ navigation }: ResetPasswordProps) => {
-  const { control, handleSubmit, watch } = useForm();
+const ResetPassword = ({ route, navigation }: ResetPasswordProps) => {
+  const { control, handleSubmit, watch } = useForm({
+    defaultValues: { username: route.params.username, password: "" },
+  });
 
-  const handlePressSubmit = () => {};
+  const handlePressSubmit = async (data: FieldValues) => {
+    try {
+      const response = await Auth.forgotPasswordSubmit(
+        data.username,
+        data.code,
+        data.password
+      );
+      Alert.alert(
+        "Success",
+        "You have successfully reset the password for your account"
+      );
+      setTimeout(() => navigation.dispatch(StackActions.popToTop()), 2000);
+    } catch (err: any) {
+      Alert.alert("Error", err.message);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.root}>
@@ -32,6 +50,14 @@ const ResetPassword = ({ navigation }: ResetPasswordProps) => {
       />
       <ScrollView style={styles.container}>
         <Text style={styles.header}>Forgot password?</Text>
+        <CustomInput
+          name="username"
+          control={control}
+          placeholder="Username"
+          autoCapitalize="none"
+          secureTextEntry={false}
+          rules={{ required: "Username is required" }}
+        />
         <CustomInput
           name="code"
           control={control}
@@ -43,9 +69,8 @@ const ResetPassword = ({ navigation }: ResetPasswordProps) => {
         <CustomInput
           name="password"
           control={control}
-          placeholder="New password"
-          autoCapitalize="none"
-          secureTextEntry={false}
+          placeholder="Password"
+          secureTextEntry
           rules={{
             required: "Password is required",
             minLength: {
@@ -55,16 +80,15 @@ const ResetPassword = ({ navigation }: ResetPasswordProps) => {
             pattern: {
               value: PasswordRegex,
               message:
-                "Passwords must contain a mix of lowercase letters, uppercase letters, and special characters (#?!@$%^&*-)",
+                "Password must contain a mix of lowercase letters, uppercase letters, and special characters (#?!@$%^&*-)",
             },
           }}
         />
         <CustomInput
           name="confirmPassword"
           control={control}
-          placeholder="Confirm new password"
-          autoCapitalize="none"
-          secureTextEntry={false}
+          placeholder="Confirm password"
+          secureTextEntry
           rules={{
             required: "Password is required",
             minLength: {

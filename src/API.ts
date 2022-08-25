@@ -3,12 +3,12 @@
 //  This file was automatically generated and should not be edited.
 
 export type CreateUserInput = {
-  sub: string,
   id?: string | null,
+  username: string,
 };
 
 export type ModelUserConditionInput = {
-  sub?: ModelStringInput | null,
+  username?: ModelStringInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
@@ -56,12 +56,13 @@ export type ModelSizeInput = {
 
 export type User = {
   __typename: "User",
-  sub: string,
+  id: string,
+  username: string,
   workouts?: ModelWorkoutConnection | null,
   routines?: ModelRoutineConnection | null,
-  id: string,
   createdAt: string,
   updatedAt: string,
+  owner?: string | null,
 };
 
 export type ModelWorkoutConnection = {
@@ -73,8 +74,10 @@ export type ModelWorkoutConnection = {
 export type Workout = {
   __typename: "Workout",
   id: string,
-  name: string,
-  sub: string,
+  name?: string | null,
+  user: User,
+  routines?: ModelRoutineWorkoutConnection | null,
+  sections?: ModelSectionWorkoutConnection | null,
   type: WorkoutType,
   logs?: ModelLogConnection | null,
   notes?: string | null,
@@ -85,7 +88,77 @@ export type Workout = {
   createdAt: string,
   updatedAt: string,
   userWorkoutsId?: string | null,
-  sectionWorkoutsId?: string | null,
+  owner?: string | null,
+};
+
+export type ModelRoutineWorkoutConnection = {
+  __typename: "ModelRoutineWorkoutConnection",
+  items:  Array<RoutineWorkout | null >,
+  nextToken?: string | null,
+};
+
+export type RoutineWorkout = {
+  __typename: "RoutineWorkout",
+  id: string,
+  routineID: string,
+  workoutID: string,
+  routine: Routine,
+  workout: Workout,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type Routine = {
+  __typename: "Routine",
+  id: string,
+  user: User,
+  name: string,
+  sub: string,
+  days?: Array< number | null > | null,
+  sections?: ModelSectionConnection | null,
+  workouts?: ModelRoutineWorkoutConnection | null,
+  notes?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  userRoutinesId?: string | null,
+  owner?: string | null,
+};
+
+export type ModelSectionConnection = {
+  __typename: "ModelSectionConnection",
+  items:  Array<Section | null >,
+  nextToken?: string | null,
+};
+
+export type Section = {
+  __typename: "Section",
+  id: string,
+  name: string,
+  routine?: Routine | null,
+  workouts?: ModelSectionWorkoutConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  routineSectionsId: string,
+  owner?: string | null,
+};
+
+export type ModelSectionWorkoutConnection = {
+  __typename: "ModelSectionWorkoutConnection",
+  items:  Array<SectionWorkout | null >,
+  nextToken?: string | null,
+};
+
+export type SectionWorkout = {
+  __typename: "SectionWorkout",
+  id: string,
+  sectionID: string,
+  workoutID: string,
+  section: Section,
+  workout: Workout,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
 };
 
 export enum WorkoutType {
@@ -105,12 +178,14 @@ export type Log = {
   id: string,
   name: string,
   timestamp?: number | null,
+  workout?: Workout | null,
   sets?: ModelSetConnection | null,
   notes?: string | null,
   units?: WorkoutUnitType | null,
   createdAt: string,
   updatedAt: string,
   workoutLogsId?: string | null,
+  owner?: string | null,
 };
 
 export type ModelSetConnection = {
@@ -122,6 +197,7 @@ export type ModelSetConnection = {
 export type Set = {
   __typename: "Set",
   id: string,
+  log: Log,
   weight?: number | null,
   reps?: number | null,
   duration?: number | null,
@@ -129,6 +205,7 @@ export type Set = {
   createdAt: string,
   updatedAt: string,
   logSetsId?: string | null,
+  owner?: string | null,
 };
 
 export enum WorkoutUnitType {
@@ -145,40 +222,9 @@ export type ModelRoutineConnection = {
   nextToken?: string | null,
 };
 
-export type Routine = {
-  __typename: "Routine",
-  id: string,
-  name: string,
-  sub: string,
-  days?: Array< number | null > | null,
-  sections?: ModelSectionConnection | null,
-  notes?: string | null,
-  createdAt: string,
-  updatedAt: string,
-  userRoutinesId?: string | null,
-};
-
-export type ModelSectionConnection = {
-  __typename: "ModelSectionConnection",
-  items:  Array<Section | null >,
-  nextToken?: string | null,
-};
-
-export type Section = {
-  __typename: "Section",
-  id: string,
-  name: string,
-  sub: string,
-  routine?: Routine | null,
-  workouts?: ModelWorkoutConnection | null,
-  createdAt: string,
-  updatedAt: string,
-  routineSectionsId: string,
-};
-
 export type UpdateUserInput = {
-  sub?: string | null,
   id: string,
+  username?: string | null,
 };
 
 export type DeleteUserInput = {
@@ -249,13 +295,11 @@ export type DeleteRoutineInput = {
 export type CreateSectionInput = {
   id?: string | null,
   name: string,
-  sub: string,
   routineSectionsId: string,
 };
 
 export type ModelSectionConditionInput = {
   name?: ModelStringInput | null,
-  sub?: ModelStringInput | null,
   and?: Array< ModelSectionConditionInput | null > | null,
   or?: Array< ModelSectionConditionInput | null > | null,
   not?: ModelSectionConditionInput | null,
@@ -265,7 +309,6 @@ export type ModelSectionConditionInput = {
 export type UpdateSectionInput = {
   id: string,
   name?: string | null,
-  sub?: string | null,
   routineSectionsId: string,
 };
 
@@ -275,8 +318,7 @@ export type DeleteSectionInput = {
 
 export type CreateWorkoutInput = {
   id?: string | null,
-  name: string,
-  sub: string,
+  name?: string | null,
   type: WorkoutType,
   notes?: string | null,
   units?: WorkoutUnitType | null,
@@ -284,12 +326,10 @@ export type CreateWorkoutInput = {
   targetRepRange?: Array< number | null > | null,
   targetDurationRange?: Array< number | null > | null,
   userWorkoutsId?: string | null,
-  sectionWorkoutsId?: string | null,
 };
 
 export type ModelWorkoutConditionInput = {
   name?: ModelStringInput | null,
-  sub?: ModelStringInput | null,
   type?: ModelWorkoutTypeInput | null,
   notes?: ModelStringInput | null,
   units?: ModelWorkoutUnitTypeInput | null,
@@ -300,7 +340,6 @@ export type ModelWorkoutConditionInput = {
   or?: Array< ModelWorkoutConditionInput | null > | null,
   not?: ModelWorkoutConditionInput | null,
   userWorkoutsId?: ModelIDInput | null,
-  sectionWorkoutsId?: ModelIDInput | null,
 };
 
 export type ModelWorkoutTypeInput = {
@@ -316,7 +355,6 @@ export type ModelWorkoutUnitTypeInput = {
 export type UpdateWorkoutInput = {
   id: string,
   name?: string | null,
-  sub?: string | null,
   type?: WorkoutType | null,
   notes?: string | null,
   units?: WorkoutUnitType | null,
@@ -324,7 +362,6 @@ export type UpdateWorkoutInput = {
   targetRepRange?: Array< number | null > | null,
   targetDurationRange?: Array< number | null > | null,
   userWorkoutsId?: string | null,
-  sectionWorkoutsId?: string | null,
 };
 
 export type DeleteWorkoutInput = {
@@ -397,12 +434,67 @@ export type DeleteSetInput = {
   id: string,
 };
 
+export type CreateRoutineWorkoutInput = {
+  id?: string | null,
+  routineID: string,
+  workoutID: string,
+};
+
+export type ModelRoutineWorkoutConditionInput = {
+  routineID?: ModelIDInput | null,
+  workoutID?: ModelIDInput | null,
+  and?: Array< ModelRoutineWorkoutConditionInput | null > | null,
+  or?: Array< ModelRoutineWorkoutConditionInput | null > | null,
+  not?: ModelRoutineWorkoutConditionInput | null,
+};
+
+export type UpdateRoutineWorkoutInput = {
+  id: string,
+  routineID?: string | null,
+  workoutID?: string | null,
+};
+
+export type DeleteRoutineWorkoutInput = {
+  id: string,
+};
+
+export type CreateSectionWorkoutInput = {
+  id?: string | null,
+  sectionID: string,
+  workoutID: string,
+};
+
+export type ModelSectionWorkoutConditionInput = {
+  sectionID?: ModelIDInput | null,
+  workoutID?: ModelIDInput | null,
+  and?: Array< ModelSectionWorkoutConditionInput | null > | null,
+  or?: Array< ModelSectionWorkoutConditionInput | null > | null,
+  not?: ModelSectionWorkoutConditionInput | null,
+};
+
+export type UpdateSectionWorkoutInput = {
+  id: string,
+  sectionID?: string | null,
+  workoutID?: string | null,
+};
+
+export type DeleteSectionWorkoutInput = {
+  id: string,
+};
+
 export type ModelUserFilterInput = {
-  sub?: ModelStringInput | null,
+  id?: ModelIDInput | null,
+  username?: ModelStringInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
 };
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
@@ -425,7 +517,6 @@ export type ModelRoutineFilterInput = {
 export type ModelSectionFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
-  sub?: ModelStringInput | null,
   and?: Array< ModelSectionFilterInput | null > | null,
   or?: Array< ModelSectionFilterInput | null > | null,
   not?: ModelSectionFilterInput | null,
@@ -435,7 +526,6 @@ export type ModelSectionFilterInput = {
 export type ModelWorkoutFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
-  sub?: ModelStringInput | null,
   type?: ModelWorkoutTypeInput | null,
   notes?: ModelStringInput | null,
   units?: ModelWorkoutUnitTypeInput | null,
@@ -446,7 +536,6 @@ export type ModelWorkoutFilterInput = {
   or?: Array< ModelWorkoutFilterInput | null > | null,
   not?: ModelWorkoutFilterInput | null,
   userWorkoutsId?: ModelIDInput | null,
-  sectionWorkoutsId?: ModelIDInput | null,
 };
 
 export type ModelLogFilterInput = {
@@ -473,104 +562,22 @@ export type ModelSetFilterInput = {
   logSetsId?: ModelIDInput | null,
 };
 
-export type ModelSubscriptionUserFilterInput = {
-  sub?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionUserFilterInput | null > | null,
-  or?: Array< ModelSubscriptionUserFilterInput | null > | null,
+export type ModelRoutineWorkoutFilterInput = {
+  id?: ModelIDInput | null,
+  routineID?: ModelIDInput | null,
+  workoutID?: ModelIDInput | null,
+  and?: Array< ModelRoutineWorkoutFilterInput | null > | null,
+  or?: Array< ModelRoutineWorkoutFilterInput | null > | null,
+  not?: ModelRoutineWorkoutFilterInput | null,
 };
 
-export type ModelSubscriptionStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
-};
-
-export type ModelSubscriptionRoutineFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  name?: ModelSubscriptionStringInput | null,
-  sub?: ModelSubscriptionStringInput | null,
-  days?: ModelSubscriptionIntInput | null,
-  notes?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionRoutineFilterInput | null > | null,
-  or?: Array< ModelSubscriptionRoutineFilterInput | null > | null,
-};
-
-export type ModelSubscriptionIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
-};
-
-export type ModelSubscriptionIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  in?: Array< number | null > | null,
-  notIn?: Array< number | null > | null,
-};
-
-export type ModelSubscriptionSectionFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  name?: ModelSubscriptionStringInput | null,
-  sub?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionSectionFilterInput | null > | null,
-  or?: Array< ModelSubscriptionSectionFilterInput | null > | null,
-};
-
-export type ModelSubscriptionWorkoutFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  name?: ModelSubscriptionStringInput | null,
-  sub?: ModelSubscriptionStringInput | null,
-  type?: ModelSubscriptionStringInput | null,
-  notes?: ModelSubscriptionStringInput | null,
-  units?: ModelSubscriptionStringInput | null,
-  targetSetRange?: ModelSubscriptionIntInput | null,
-  targetRepRange?: ModelSubscriptionIntInput | null,
-  targetDurationRange?: ModelSubscriptionIntInput | null,
-  and?: Array< ModelSubscriptionWorkoutFilterInput | null > | null,
-  or?: Array< ModelSubscriptionWorkoutFilterInput | null > | null,
-};
-
-export type ModelSubscriptionLogFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  name?: ModelSubscriptionStringInput | null,
-  timestamp?: ModelSubscriptionIntInput | null,
-  notes?: ModelSubscriptionStringInput | null,
-  units?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionLogFilterInput | null > | null,
-  or?: Array< ModelSubscriptionLogFilterInput | null > | null,
-};
-
-export type ModelSubscriptionSetFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  weight?: ModelSubscriptionIntInput | null,
-  reps?: ModelSubscriptionIntInput | null,
-  duration?: ModelSubscriptionIntInput | null,
-  units?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionSetFilterInput | null > | null,
-  or?: Array< ModelSubscriptionSetFilterInput | null > | null,
+export type ModelSectionWorkoutFilterInput = {
+  id?: ModelIDInput | null,
+  sectionID?: ModelIDInput | null,
+  workoutID?: ModelIDInput | null,
+  and?: Array< ModelSectionWorkoutFilterInput | null > | null,
+  or?: Array< ModelSectionWorkoutFilterInput | null > | null,
+  not?: ModelSectionWorkoutFilterInput | null,
 };
 
 export type CreateUserMutationVariables = {
@@ -581,14 +588,14 @@ export type CreateUserMutationVariables = {
 export type CreateUserMutation = {
   createUser?:  {
     __typename: "User",
-    sub: string,
+    id: string,
+    username: string,
     workouts?:  {
       __typename: "ModelWorkoutConnection",
       items:  Array< {
         __typename: "Workout",
         id: string,
-        name: string,
-        sub: string,
+        name?: string | null,
         type: WorkoutType,
         notes?: string | null,
         units?: WorkoutUnitType | null,
@@ -598,7 +605,7 @@ export type CreateUserMutation = {
         createdAt: string,
         updatedAt: string,
         userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -614,12 +621,13 @@ export type CreateUserMutation = {
         createdAt: string,
         updatedAt: string,
         userRoutinesId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    id: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -631,14 +639,14 @@ export type UpdateUserMutationVariables = {
 export type UpdateUserMutation = {
   updateUser?:  {
     __typename: "User",
-    sub: string,
+    id: string,
+    username: string,
     workouts?:  {
       __typename: "ModelWorkoutConnection",
       items:  Array< {
         __typename: "Workout",
         id: string,
-        name: string,
-        sub: string,
+        name?: string | null,
         type: WorkoutType,
         notes?: string | null,
         units?: WorkoutUnitType | null,
@@ -648,7 +656,7 @@ export type UpdateUserMutation = {
         createdAt: string,
         updatedAt: string,
         userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -664,12 +672,13 @@ export type UpdateUserMutation = {
         createdAt: string,
         updatedAt: string,
         userRoutinesId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    id: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -681,14 +690,14 @@ export type DeleteUserMutationVariables = {
 export type DeleteUserMutation = {
   deleteUser?:  {
     __typename: "User",
-    sub: string,
+    id: string,
+    username: string,
     workouts?:  {
       __typename: "ModelWorkoutConnection",
       items:  Array< {
         __typename: "Workout",
         id: string,
-        name: string,
-        sub: string,
+        name?: string | null,
         type: WorkoutType,
         notes?: string | null,
         units?: WorkoutUnitType | null,
@@ -698,7 +707,7 @@ export type DeleteUserMutation = {
         createdAt: string,
         updatedAt: string,
         userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -714,12 +723,13 @@ export type DeleteUserMutation = {
         createdAt: string,
         updatedAt: string,
         userRoutinesId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    id: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -732,6 +742,22 @@ export type CreateRoutineMutation = {
   createRoutine?:  {
     __typename: "Routine",
     id: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
     name: string,
     sub: string,
     days?: Array< number | null > | null,
@@ -741,10 +767,23 @@ export type CreateRoutineMutation = {
         __typename: "Section",
         id: string,
         name: string,
-        sub: string,
         createdAt: string,
         updatedAt: string,
         routineSectionsId: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    workouts?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -752,6 +791,7 @@ export type CreateRoutineMutation = {
     createdAt: string,
     updatedAt: string,
     userRoutinesId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -764,6 +804,22 @@ export type UpdateRoutineMutation = {
   updateRoutine?:  {
     __typename: "Routine",
     id: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
     name: string,
     sub: string,
     days?: Array< number | null > | null,
@@ -773,10 +829,23 @@ export type UpdateRoutineMutation = {
         __typename: "Section",
         id: string,
         name: string,
-        sub: string,
         createdAt: string,
         updatedAt: string,
         routineSectionsId: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    workouts?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -784,6 +853,7 @@ export type UpdateRoutineMutation = {
     createdAt: string,
     updatedAt: string,
     userRoutinesId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -796,6 +866,22 @@ export type DeleteRoutineMutation = {
   deleteRoutine?:  {
     __typename: "Routine",
     id: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
     name: string,
     sub: string,
     days?: Array< number | null > | null,
@@ -805,10 +891,23 @@ export type DeleteRoutineMutation = {
         __typename: "Section",
         id: string,
         name: string,
-        sub: string,
         createdAt: string,
         updatedAt: string,
         routineSectionsId: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    workouts?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -816,6 +915,7 @@ export type DeleteRoutineMutation = {
     createdAt: string,
     updatedAt: string,
     userRoutinesId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -829,10 +929,17 @@ export type CreateSectionMutation = {
     __typename: "Section",
     id: string,
     name: string,
-    sub: string,
     routine?:  {
       __typename: "Routine",
       id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
       name: string,
       sub: string,
       days?: Array< number | null > | null,
@@ -840,34 +947,33 @@ export type CreateSectionMutation = {
         __typename: "ModelSectionConnection",
         nextToken?: string | null,
       } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
       notes?: string | null,
       createdAt: string,
       updatedAt: string,
       userRoutinesId?: string | null,
+      owner?: string | null,
     } | null,
     workouts?:  {
-      __typename: "ModelWorkoutConnection",
+      __typename: "ModelSectionWorkoutConnection",
       items:  Array< {
-        __typename: "Workout",
+        __typename: "SectionWorkout",
         id: string,
-        name: string,
-        sub: string,
-        type: WorkoutType,
-        notes?: string | null,
-        units?: WorkoutUnitType | null,
-        targetSetRange?: Array< number | null > | null,
-        targetRepRange?: Array< number | null > | null,
-        targetDurationRange?: Array< number | null > | null,
+        sectionID: string,
+        workoutID: string,
         createdAt: string,
         updatedAt: string,
-        userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
     routineSectionsId: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -881,10 +987,17 @@ export type UpdateSectionMutation = {
     __typename: "Section",
     id: string,
     name: string,
-    sub: string,
     routine?:  {
       __typename: "Routine",
       id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
       name: string,
       sub: string,
       days?: Array< number | null > | null,
@@ -892,34 +1005,33 @@ export type UpdateSectionMutation = {
         __typename: "ModelSectionConnection",
         nextToken?: string | null,
       } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
       notes?: string | null,
       createdAt: string,
       updatedAt: string,
       userRoutinesId?: string | null,
+      owner?: string | null,
     } | null,
     workouts?:  {
-      __typename: "ModelWorkoutConnection",
+      __typename: "ModelSectionWorkoutConnection",
       items:  Array< {
-        __typename: "Workout",
+        __typename: "SectionWorkout",
         id: string,
-        name: string,
-        sub: string,
-        type: WorkoutType,
-        notes?: string | null,
-        units?: WorkoutUnitType | null,
-        targetSetRange?: Array< number | null > | null,
-        targetRepRange?: Array< number | null > | null,
-        targetDurationRange?: Array< number | null > | null,
+        sectionID: string,
+        workoutID: string,
         createdAt: string,
         updatedAt: string,
-        userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
     routineSectionsId: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -933,10 +1045,17 @@ export type DeleteSectionMutation = {
     __typename: "Section",
     id: string,
     name: string,
-    sub: string,
     routine?:  {
       __typename: "Routine",
       id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
       name: string,
       sub: string,
       days?: Array< number | null > | null,
@@ -944,34 +1063,33 @@ export type DeleteSectionMutation = {
         __typename: "ModelSectionConnection",
         nextToken?: string | null,
       } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
       notes?: string | null,
       createdAt: string,
       updatedAt: string,
       userRoutinesId?: string | null,
+      owner?: string | null,
     } | null,
     workouts?:  {
-      __typename: "ModelWorkoutConnection",
+      __typename: "ModelSectionWorkoutConnection",
       items:  Array< {
-        __typename: "Workout",
+        __typename: "SectionWorkout",
         id: string,
-        name: string,
-        sub: string,
-        type: WorkoutType,
-        notes?: string | null,
-        units?: WorkoutUnitType | null,
-        targetSetRange?: Array< number | null > | null,
-        targetRepRange?: Array< number | null > | null,
-        targetDurationRange?: Array< number | null > | null,
+        sectionID: string,
+        workoutID: string,
         createdAt: string,
         updatedAt: string,
-        userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
     routineSectionsId: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -984,8 +1102,49 @@ export type CreateWorkoutMutation = {
   createWorkout?:  {
     __typename: "Workout",
     id: string,
-    name: string,
-    sub: string,
+    name?: string | null,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    routines?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    sections?:  {
+      __typename: "ModelSectionWorkoutConnection",
+      items:  Array< {
+        __typename: "SectionWorkout",
+        id: string,
+        sectionID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     type: WorkoutType,
     logs?:  {
       __typename: "ModelLogConnection",
@@ -999,6 +1158,7 @@ export type CreateWorkoutMutation = {
         createdAt: string,
         updatedAt: string,
         workoutLogsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1010,7 +1170,7 @@ export type CreateWorkoutMutation = {
     createdAt: string,
     updatedAt: string,
     userWorkoutsId?: string | null,
-    sectionWorkoutsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1023,8 +1183,49 @@ export type UpdateWorkoutMutation = {
   updateWorkout?:  {
     __typename: "Workout",
     id: string,
-    name: string,
-    sub: string,
+    name?: string | null,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    routines?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    sections?:  {
+      __typename: "ModelSectionWorkoutConnection",
+      items:  Array< {
+        __typename: "SectionWorkout",
+        id: string,
+        sectionID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     type: WorkoutType,
     logs?:  {
       __typename: "ModelLogConnection",
@@ -1038,6 +1239,7 @@ export type UpdateWorkoutMutation = {
         createdAt: string,
         updatedAt: string,
         workoutLogsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1049,7 +1251,7 @@ export type UpdateWorkoutMutation = {
     createdAt: string,
     updatedAt: string,
     userWorkoutsId?: string | null,
-    sectionWorkoutsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1062,8 +1264,49 @@ export type DeleteWorkoutMutation = {
   deleteWorkout?:  {
     __typename: "Workout",
     id: string,
-    name: string,
-    sub: string,
+    name?: string | null,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    routines?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    sections?:  {
+      __typename: "ModelSectionWorkoutConnection",
+      items:  Array< {
+        __typename: "SectionWorkout",
+        id: string,
+        sectionID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     type: WorkoutType,
     logs?:  {
       __typename: "ModelLogConnection",
@@ -1077,6 +1320,7 @@ export type DeleteWorkoutMutation = {
         createdAt: string,
         updatedAt: string,
         workoutLogsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1088,7 +1332,7 @@ export type DeleteWorkoutMutation = {
     createdAt: string,
     updatedAt: string,
     userWorkoutsId?: string | null,
-    sectionWorkoutsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1103,6 +1347,41 @@ export type CreateLogMutation = {
     id: string,
     name: string,
     timestamp?: number | null,
+    workout?:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    } | null,
     sets?:  {
       __typename: "ModelSetConnection",
       items:  Array< {
@@ -1115,6 +1394,7 @@ export type CreateLogMutation = {
         createdAt: string,
         updatedAt: string,
         logSetsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1123,6 +1403,7 @@ export type CreateLogMutation = {
     createdAt: string,
     updatedAt: string,
     workoutLogsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1137,6 +1418,41 @@ export type UpdateLogMutation = {
     id: string,
     name: string,
     timestamp?: number | null,
+    workout?:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    } | null,
     sets?:  {
       __typename: "ModelSetConnection",
       items:  Array< {
@@ -1149,6 +1465,7 @@ export type UpdateLogMutation = {
         createdAt: string,
         updatedAt: string,
         logSetsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1157,6 +1474,7 @@ export type UpdateLogMutation = {
     createdAt: string,
     updatedAt: string,
     workoutLogsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1171,6 +1489,41 @@ export type DeleteLogMutation = {
     id: string,
     name: string,
     timestamp?: number | null,
+    workout?:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    } | null,
     sets?:  {
       __typename: "ModelSetConnection",
       items:  Array< {
@@ -1183,6 +1536,7 @@ export type DeleteLogMutation = {
         createdAt: string,
         updatedAt: string,
         logSetsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1191,6 +1545,7 @@ export type DeleteLogMutation = {
     createdAt: string,
     updatedAt: string,
     workoutLogsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1203,6 +1558,37 @@ export type CreateSetMutation = {
   createSet?:  {
     __typename: "Set",
     id: string,
+    log:  {
+      __typename: "Log",
+      id: string,
+      name: string,
+      timestamp?: number | null,
+      workout?:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      } | null,
+      sets?:  {
+        __typename: "ModelSetConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      createdAt: string,
+      updatedAt: string,
+      workoutLogsId?: string | null,
+      owner?: string | null,
+    },
     weight?: number | null,
     reps?: number | null,
     duration?: number | null,
@@ -1210,6 +1596,7 @@ export type CreateSetMutation = {
     createdAt: string,
     updatedAt: string,
     logSetsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1222,6 +1609,37 @@ export type UpdateSetMutation = {
   updateSet?:  {
     __typename: "Set",
     id: string,
+    log:  {
+      __typename: "Log",
+      id: string,
+      name: string,
+      timestamp?: number | null,
+      workout?:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      } | null,
+      sets?:  {
+        __typename: "ModelSetConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      createdAt: string,
+      updatedAt: string,
+      workoutLogsId?: string | null,
+      owner?: string | null,
+    },
     weight?: number | null,
     reps?: number | null,
     duration?: number | null,
@@ -1229,6 +1647,7 @@ export type UpdateSetMutation = {
     createdAt: string,
     updatedAt: string,
     logSetsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
@@ -1241,6 +1660,37 @@ export type DeleteSetMutation = {
   deleteSet?:  {
     __typename: "Set",
     id: string,
+    log:  {
+      __typename: "Log",
+      id: string,
+      name: string,
+      timestamp?: number | null,
+      workout?:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      } | null,
+      sets?:  {
+        __typename: "ModelSetConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      createdAt: string,
+      updatedAt: string,
+      workoutLogsId?: string | null,
+      owner?: string | null,
+    },
     weight?: number | null,
     reps?: number | null,
     duration?: number | null,
@@ -1248,6 +1698,478 @@ export type DeleteSetMutation = {
     createdAt: string,
     updatedAt: string,
     logSetsId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type CreateRoutineWorkoutMutationVariables = {
+  input: CreateRoutineWorkoutInput,
+  condition?: ModelRoutineWorkoutConditionInput | null,
+};
+
+export type CreateRoutineWorkoutMutation = {
+  createRoutineWorkout?:  {
+    __typename: "RoutineWorkout",
+    id: string,
+    routineID: string,
+    workoutID: string,
+    routine:  {
+      __typename: "Routine",
+      id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      name: string,
+      sub: string,
+      days?: Array< number | null > | null,
+      sections?:  {
+        __typename: "ModelSectionConnection",
+        nextToken?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userRoutinesId?: string | null,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateRoutineWorkoutMutationVariables = {
+  input: UpdateRoutineWorkoutInput,
+  condition?: ModelRoutineWorkoutConditionInput | null,
+};
+
+export type UpdateRoutineWorkoutMutation = {
+  updateRoutineWorkout?:  {
+    __typename: "RoutineWorkout",
+    id: string,
+    routineID: string,
+    workoutID: string,
+    routine:  {
+      __typename: "Routine",
+      id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      name: string,
+      sub: string,
+      days?: Array< number | null > | null,
+      sections?:  {
+        __typename: "ModelSectionConnection",
+        nextToken?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userRoutinesId?: string | null,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteRoutineWorkoutMutationVariables = {
+  input: DeleteRoutineWorkoutInput,
+  condition?: ModelRoutineWorkoutConditionInput | null,
+};
+
+export type DeleteRoutineWorkoutMutation = {
+  deleteRoutineWorkout?:  {
+    __typename: "RoutineWorkout",
+    id: string,
+    routineID: string,
+    workoutID: string,
+    routine:  {
+      __typename: "Routine",
+      id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      name: string,
+      sub: string,
+      days?: Array< number | null > | null,
+      sections?:  {
+        __typename: "ModelSectionConnection",
+        nextToken?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userRoutinesId?: string | null,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type CreateSectionWorkoutMutationVariables = {
+  input: CreateSectionWorkoutInput,
+  condition?: ModelSectionWorkoutConditionInput | null,
+};
+
+export type CreateSectionWorkoutMutation = {
+  createSectionWorkout?:  {
+    __typename: "SectionWorkout",
+    id: string,
+    sectionID: string,
+    workoutID: string,
+    section:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      routine?:  {
+        __typename: "Routine",
+        id: string,
+        name: string,
+        sub: string,
+        days?: Array< number | null > | null,
+        notes?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        userRoutinesId?: string | null,
+        owner?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      routineSectionsId: string,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateSectionWorkoutMutationVariables = {
+  input: UpdateSectionWorkoutInput,
+  condition?: ModelSectionWorkoutConditionInput | null,
+};
+
+export type UpdateSectionWorkoutMutation = {
+  updateSectionWorkout?:  {
+    __typename: "SectionWorkout",
+    id: string,
+    sectionID: string,
+    workoutID: string,
+    section:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      routine?:  {
+        __typename: "Routine",
+        id: string,
+        name: string,
+        sub: string,
+        days?: Array< number | null > | null,
+        notes?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        userRoutinesId?: string | null,
+        owner?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      routineSectionsId: string,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteSectionWorkoutMutationVariables = {
+  input: DeleteSectionWorkoutInput,
+  condition?: ModelSectionWorkoutConditionInput | null,
+};
+
+export type DeleteSectionWorkoutMutation = {
+  deleteSectionWorkout?:  {
+    __typename: "SectionWorkout",
+    id: string,
+    sectionID: string,
+    workoutID: string,
+    section:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      routine?:  {
+        __typename: "Routine",
+        id: string,
+        name: string,
+        sub: string,
+        days?: Array< number | null > | null,
+        notes?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        userRoutinesId?: string | null,
+        owner?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      routineSectionsId: string,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -1258,14 +2180,14 @@ export type GetUserQueryVariables = {
 export type GetUserQuery = {
   getUser?:  {
     __typename: "User",
-    sub: string,
+    id: string,
+    username: string,
     workouts?:  {
       __typename: "ModelWorkoutConnection",
       items:  Array< {
         __typename: "Workout",
         id: string,
-        name: string,
-        sub: string,
+        name?: string | null,
         type: WorkoutType,
         notes?: string | null,
         units?: WorkoutUnitType | null,
@@ -1275,7 +2197,7 @@ export type GetUserQuery = {
         createdAt: string,
         updatedAt: string,
         userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1291,19 +2213,22 @@ export type GetUserQuery = {
         createdAt: string,
         updatedAt: string,
         userRoutinesId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    id: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type ListUsersQueryVariables = {
+  id?: string | null,
   filter?: ModelUserFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListUsersQuery = {
@@ -1311,7 +2236,8 @@ export type ListUsersQuery = {
     __typename: "ModelUserConnection",
     items:  Array< {
       __typename: "User",
-      sub: string,
+      id: string,
+      username: string,
       workouts?:  {
         __typename: "ModelWorkoutConnection",
         nextToken?: string | null,
@@ -1320,9 +2246,9 @@ export type ListUsersQuery = {
         __typename: "ModelRoutineConnection",
         nextToken?: string | null,
       } | null,
-      id: string,
       createdAt: string,
       updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1336,6 +2262,22 @@ export type GetRoutineQuery = {
   getRoutine?:  {
     __typename: "Routine",
     id: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
     name: string,
     sub: string,
     days?: Array< number | null > | null,
@@ -1345,10 +2287,23 @@ export type GetRoutineQuery = {
         __typename: "Section",
         id: string,
         name: string,
-        sub: string,
         createdAt: string,
         updatedAt: string,
         routineSectionsId: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    workouts?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1356,13 +2311,16 @@ export type GetRoutineQuery = {
     createdAt: string,
     updatedAt: string,
     userRoutinesId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type ListRoutinesQueryVariables = {
+  id?: string | null,
   filter?: ModelRoutineFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListRoutinesQuery = {
@@ -1371,6 +2329,14 @@ export type ListRoutinesQuery = {
     items:  Array< {
       __typename: "Routine",
       id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
       name: string,
       sub: string,
       days?: Array< number | null > | null,
@@ -1378,10 +2344,15 @@ export type ListRoutinesQuery = {
         __typename: "ModelSectionConnection",
         nextToken?: string | null,
       } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
       notes?: string | null,
       createdAt: string,
       updatedAt: string,
       userRoutinesId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1396,10 +2367,17 @@ export type GetSectionQuery = {
     __typename: "Section",
     id: string,
     name: string,
-    sub: string,
     routine?:  {
       __typename: "Routine",
       id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
       name: string,
       sub: string,
       days?: Array< number | null > | null,
@@ -1407,41 +2385,42 @@ export type GetSectionQuery = {
         __typename: "ModelSectionConnection",
         nextToken?: string | null,
       } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
       notes?: string | null,
       createdAt: string,
       updatedAt: string,
       userRoutinesId?: string | null,
+      owner?: string | null,
     } | null,
     workouts?:  {
-      __typename: "ModelWorkoutConnection",
+      __typename: "ModelSectionWorkoutConnection",
       items:  Array< {
-        __typename: "Workout",
+        __typename: "SectionWorkout",
         id: string,
-        name: string,
-        sub: string,
-        type: WorkoutType,
-        notes?: string | null,
-        units?: WorkoutUnitType | null,
-        targetSetRange?: Array< number | null > | null,
-        targetRepRange?: Array< number | null > | null,
-        targetDurationRange?: Array< number | null > | null,
+        sectionID: string,
+        workoutID: string,
         createdAt: string,
         updatedAt: string,
-        userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
     routineSectionsId: string,
+    owner?: string | null,
   } | null,
 };
 
 export type ListSectionsQueryVariables = {
+  id?: string | null,
   filter?: ModelSectionFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListSectionsQuery = {
@@ -1451,7 +2430,6 @@ export type ListSectionsQuery = {
       __typename: "Section",
       id: string,
       name: string,
-      sub: string,
       routine?:  {
         __typename: "Routine",
         id: string,
@@ -1462,14 +2440,16 @@ export type ListSectionsQuery = {
         createdAt: string,
         updatedAt: string,
         userRoutinesId?: string | null,
+        owner?: string | null,
       } | null,
       workouts?:  {
-        __typename: "ModelWorkoutConnection",
+        __typename: "ModelSectionWorkoutConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
       routineSectionsId: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1483,8 +2463,49 @@ export type GetWorkoutQuery = {
   getWorkout?:  {
     __typename: "Workout",
     id: string,
-    name: string,
-    sub: string,
+    name?: string | null,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    routines?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    sections?:  {
+      __typename: "ModelSectionWorkoutConnection",
+      items:  Array< {
+        __typename: "SectionWorkout",
+        id: string,
+        sectionID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     type: WorkoutType,
     logs?:  {
       __typename: "ModelLogConnection",
@@ -1498,6 +2519,7 @@ export type GetWorkoutQuery = {
         createdAt: string,
         updatedAt: string,
         workoutLogsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1509,14 +2531,16 @@ export type GetWorkoutQuery = {
     createdAt: string,
     updatedAt: string,
     userWorkoutsId?: string | null,
-    sectionWorkoutsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type ListWorkoutsQueryVariables = {
+  id?: string | null,
   filter?: ModelWorkoutFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListWorkoutsQuery = {
@@ -1525,8 +2549,23 @@ export type ListWorkoutsQuery = {
     items:  Array< {
       __typename: "Workout",
       id: string,
-      name: string,
-      sub: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
       type: WorkoutType,
       logs?:  {
         __typename: "ModelLogConnection",
@@ -1540,7 +2579,7 @@ export type ListWorkoutsQuery = {
       createdAt: string,
       updatedAt: string,
       userWorkoutsId?: string | null,
-      sectionWorkoutsId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1556,6 +2595,41 @@ export type GetLogQuery = {
     id: string,
     name: string,
     timestamp?: number | null,
+    workout?:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    } | null,
     sets?:  {
       __typename: "ModelSetConnection",
       items:  Array< {
@@ -1568,6 +2642,7 @@ export type GetLogQuery = {
         createdAt: string,
         updatedAt: string,
         logSetsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1576,13 +2651,16 @@ export type GetLogQuery = {
     createdAt: string,
     updatedAt: string,
     workoutLogsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type ListLogsQueryVariables = {
+  id?: string | null,
   filter?: ModelLogFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListLogsQuery = {
@@ -1593,6 +2671,21 @@ export type ListLogsQuery = {
       id: string,
       name: string,
       timestamp?: number | null,
+      workout?:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      } | null,
       sets?:  {
         __typename: "ModelSetConnection",
         nextToken?: string | null,
@@ -1602,6 +2695,7 @@ export type ListLogsQuery = {
       createdAt: string,
       updatedAt: string,
       workoutLogsId?: string | null,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1615,6 +2709,37 @@ export type GetSetQuery = {
   getSet?:  {
     __typename: "Set",
     id: string,
+    log:  {
+      __typename: "Log",
+      id: string,
+      name: string,
+      timestamp?: number | null,
+      workout?:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      } | null,
+      sets?:  {
+        __typename: "ModelSetConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      createdAt: string,
+      updatedAt: string,
+      workoutLogsId?: string | null,
+      owner?: string | null,
+    },
     weight?: number | null,
     reps?: number | null,
     duration?: number | null,
@@ -1622,13 +2747,16 @@ export type GetSetQuery = {
     createdAt: string,
     updatedAt: string,
     logSetsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type ListSetsQueryVariables = {
+  id?: string | null,
   filter?: ModelSetFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListSetsQuery = {
@@ -1637,6 +2765,18 @@ export type ListSetsQuery = {
     items:  Array< {
       __typename: "Set",
       id: string,
+      log:  {
+        __typename: "Log",
+        id: string,
+        name: string,
+        timestamp?: number | null,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        createdAt: string,
+        updatedAt: string,
+        workoutLogsId?: string | null,
+        owner?: string | null,
+      },
       weight?: number | null,
       reps?: number | null,
       duration?: number | null,
@@ -1644,26 +2784,277 @@ export type ListSetsQuery = {
       createdAt: string,
       updatedAt: string,
       logSetsId?: string | null,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetRoutineWorkoutQueryVariables = {
+  id: string,
+};
+
+export type GetRoutineWorkoutQuery = {
+  getRoutineWorkout?:  {
+    __typename: "RoutineWorkout",
+    id: string,
+    routineID: string,
+    workoutID: string,
+    routine:  {
+      __typename: "Routine",
+      id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      name: string,
+      sub: string,
+      days?: Array< number | null > | null,
+      sections?:  {
+        __typename: "ModelSectionConnection",
+        nextToken?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userRoutinesId?: string | null,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListRoutineWorkoutsQueryVariables = {
+  filter?: ModelRoutineWorkoutFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListRoutineWorkoutsQuery = {
+  listRoutineWorkouts?:  {
+    __typename: "ModelRoutineWorkoutConnection",
+    items:  Array< {
+      __typename: "RoutineWorkout",
+      id: string,
+      routineID: string,
+      workoutID: string,
+      routine:  {
+        __typename: "Routine",
+        id: string,
+        name: string,
+        sub: string,
+        days?: Array< number | null > | null,
+        notes?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        userRoutinesId?: string | null,
+        owner?: string | null,
+      },
+      workout:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      },
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetSectionWorkoutQueryVariables = {
+  id: string,
+};
+
+export type GetSectionWorkoutQuery = {
+  getSectionWorkout?:  {
+    __typename: "SectionWorkout",
+    id: string,
+    sectionID: string,
+    workoutID: string,
+    section:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      routine?:  {
+        __typename: "Routine",
+        id: string,
+        name: string,
+        sub: string,
+        days?: Array< number | null > | null,
+        notes?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        userRoutinesId?: string | null,
+        owner?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      routineSectionsId: string,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListSectionWorkoutsQueryVariables = {
+  filter?: ModelSectionWorkoutFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListSectionWorkoutsQuery = {
+  listSectionWorkouts?:  {
+    __typename: "ModelSectionWorkoutConnection",
+    items:  Array< {
+      __typename: "SectionWorkout",
+      id: string,
+      sectionID: string,
+      workoutID: string,
+      section:  {
+        __typename: "Section",
+        id: string,
+        name: string,
+        createdAt: string,
+        updatedAt: string,
+        routineSectionsId: string,
+        owner?: string | null,
+      },
+      workout:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      },
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
 };
 
 export type OnCreateUserSubscriptionVariables = {
-  filter?: ModelSubscriptionUserFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateUserSubscription = {
   onCreateUser?:  {
     __typename: "User",
-    sub: string,
+    id: string,
+    username: string,
     workouts?:  {
       __typename: "ModelWorkoutConnection",
       items:  Array< {
         __typename: "Workout",
         id: string,
-        name: string,
-        sub: string,
+        name?: string | null,
         type: WorkoutType,
         notes?: string | null,
         units?: WorkoutUnitType | null,
@@ -1673,7 +3064,7 @@ export type OnCreateUserSubscription = {
         createdAt: string,
         updatedAt: string,
         userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1689,30 +3080,31 @@ export type OnCreateUserSubscription = {
         createdAt: string,
         updatedAt: string,
         userRoutinesId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    id: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateUserSubscriptionVariables = {
-  filter?: ModelSubscriptionUserFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateUserSubscription = {
   onUpdateUser?:  {
     __typename: "User",
-    sub: string,
+    id: string,
+    username: string,
     workouts?:  {
       __typename: "ModelWorkoutConnection",
       items:  Array< {
         __typename: "Workout",
         id: string,
-        name: string,
-        sub: string,
+        name?: string | null,
         type: WorkoutType,
         notes?: string | null,
         units?: WorkoutUnitType | null,
@@ -1722,7 +3114,7 @@ export type OnUpdateUserSubscription = {
         createdAt: string,
         updatedAt: string,
         userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1738,30 +3130,31 @@ export type OnUpdateUserSubscription = {
         createdAt: string,
         updatedAt: string,
         userRoutinesId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    id: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteUserSubscriptionVariables = {
-  filter?: ModelSubscriptionUserFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteUserSubscription = {
   onDeleteUser?:  {
     __typename: "User",
-    sub: string,
+    id: string,
+    username: string,
     workouts?:  {
       __typename: "ModelWorkoutConnection",
       items:  Array< {
         __typename: "Workout",
         id: string,
-        name: string,
-        sub: string,
+        name?: string | null,
         type: WorkoutType,
         notes?: string | null,
         units?: WorkoutUnitType | null,
@@ -1771,7 +3164,7 @@ export type OnDeleteUserSubscription = {
         createdAt: string,
         updatedAt: string,
         userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1787,23 +3180,40 @@ export type OnDeleteUserSubscription = {
         createdAt: string,
         updatedAt: string,
         userRoutinesId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
-    id: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateRoutineSubscriptionVariables = {
-  filter?: ModelSubscriptionRoutineFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateRoutineSubscription = {
   onCreateRoutine?:  {
     __typename: "Routine",
     id: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
     name: string,
     sub: string,
     days?: Array< number | null > | null,
@@ -1813,10 +3223,23 @@ export type OnCreateRoutineSubscription = {
         __typename: "Section",
         id: string,
         name: string,
-        sub: string,
         createdAt: string,
         updatedAt: string,
         routineSectionsId: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    workouts?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1824,17 +3247,34 @@ export type OnCreateRoutineSubscription = {
     createdAt: string,
     updatedAt: string,
     userRoutinesId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateRoutineSubscriptionVariables = {
-  filter?: ModelSubscriptionRoutineFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateRoutineSubscription = {
   onUpdateRoutine?:  {
     __typename: "Routine",
     id: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
     name: string,
     sub: string,
     days?: Array< number | null > | null,
@@ -1844,10 +3284,23 @@ export type OnUpdateRoutineSubscription = {
         __typename: "Section",
         id: string,
         name: string,
-        sub: string,
         createdAt: string,
         updatedAt: string,
         routineSectionsId: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    workouts?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1855,17 +3308,34 @@ export type OnUpdateRoutineSubscription = {
     createdAt: string,
     updatedAt: string,
     userRoutinesId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteRoutineSubscriptionVariables = {
-  filter?: ModelSubscriptionRoutineFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteRoutineSubscription = {
   onDeleteRoutine?:  {
     __typename: "Routine",
     id: string,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
     name: string,
     sub: string,
     days?: Array< number | null > | null,
@@ -1875,10 +3345,23 @@ export type OnDeleteRoutineSubscription = {
         __typename: "Section",
         id: string,
         name: string,
-        sub: string,
         createdAt: string,
         updatedAt: string,
         routineSectionsId: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    workouts?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1886,11 +3369,12 @@ export type OnDeleteRoutineSubscription = {
     createdAt: string,
     updatedAt: string,
     userRoutinesId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateSectionSubscriptionVariables = {
-  filter?: ModelSubscriptionSectionFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateSectionSubscription = {
@@ -1898,10 +3382,17 @@ export type OnCreateSectionSubscription = {
     __typename: "Section",
     id: string,
     name: string,
-    sub: string,
     routine?:  {
       __typename: "Routine",
       id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
       name: string,
       sub: string,
       days?: Array< number | null > | null,
@@ -1909,39 +3400,38 @@ export type OnCreateSectionSubscription = {
         __typename: "ModelSectionConnection",
         nextToken?: string | null,
       } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
       notes?: string | null,
       createdAt: string,
       updatedAt: string,
       userRoutinesId?: string | null,
+      owner?: string | null,
     } | null,
     workouts?:  {
-      __typename: "ModelWorkoutConnection",
+      __typename: "ModelSectionWorkoutConnection",
       items:  Array< {
-        __typename: "Workout",
+        __typename: "SectionWorkout",
         id: string,
-        name: string,
-        sub: string,
-        type: WorkoutType,
-        notes?: string | null,
-        units?: WorkoutUnitType | null,
-        targetSetRange?: Array< number | null > | null,
-        targetRepRange?: Array< number | null > | null,
-        targetDurationRange?: Array< number | null > | null,
+        sectionID: string,
+        workoutID: string,
         createdAt: string,
         updatedAt: string,
-        userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
     routineSectionsId: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateSectionSubscriptionVariables = {
-  filter?: ModelSubscriptionSectionFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateSectionSubscription = {
@@ -1949,10 +3439,17 @@ export type OnUpdateSectionSubscription = {
     __typename: "Section",
     id: string,
     name: string,
-    sub: string,
     routine?:  {
       __typename: "Routine",
       id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
       name: string,
       sub: string,
       days?: Array< number | null > | null,
@@ -1960,39 +3457,38 @@ export type OnUpdateSectionSubscription = {
         __typename: "ModelSectionConnection",
         nextToken?: string | null,
       } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
       notes?: string | null,
       createdAt: string,
       updatedAt: string,
       userRoutinesId?: string | null,
+      owner?: string | null,
     } | null,
     workouts?:  {
-      __typename: "ModelWorkoutConnection",
+      __typename: "ModelSectionWorkoutConnection",
       items:  Array< {
-        __typename: "Workout",
+        __typename: "SectionWorkout",
         id: string,
-        name: string,
-        sub: string,
-        type: WorkoutType,
-        notes?: string | null,
-        units?: WorkoutUnitType | null,
-        targetSetRange?: Array< number | null > | null,
-        targetRepRange?: Array< number | null > | null,
-        targetDurationRange?: Array< number | null > | null,
+        sectionID: string,
+        workoutID: string,
         createdAt: string,
         updatedAt: string,
-        userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
     routineSectionsId: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteSectionSubscriptionVariables = {
-  filter?: ModelSubscriptionSectionFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteSectionSubscription = {
@@ -2000,10 +3496,17 @@ export type OnDeleteSectionSubscription = {
     __typename: "Section",
     id: string,
     name: string,
-    sub: string,
     routine?:  {
       __typename: "Routine",
       id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
       name: string,
       sub: string,
       days?: Array< number | null > | null,
@@ -2011,47 +3514,87 @@ export type OnDeleteSectionSubscription = {
         __typename: "ModelSectionConnection",
         nextToken?: string | null,
       } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
       notes?: string | null,
       createdAt: string,
       updatedAt: string,
       userRoutinesId?: string | null,
+      owner?: string | null,
     } | null,
     workouts?:  {
-      __typename: "ModelWorkoutConnection",
+      __typename: "ModelSectionWorkoutConnection",
       items:  Array< {
-        __typename: "Workout",
+        __typename: "SectionWorkout",
         id: string,
-        name: string,
-        sub: string,
-        type: WorkoutType,
-        notes?: string | null,
-        units?: WorkoutUnitType | null,
-        targetSetRange?: Array< number | null > | null,
-        targetRepRange?: Array< number | null > | null,
-        targetDurationRange?: Array< number | null > | null,
+        sectionID: string,
+        workoutID: string,
         createdAt: string,
         updatedAt: string,
-        userWorkoutsId?: string | null,
-        sectionWorkoutsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
     routineSectionsId: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateWorkoutSubscriptionVariables = {
-  filter?: ModelSubscriptionWorkoutFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateWorkoutSubscription = {
   onCreateWorkout?:  {
     __typename: "Workout",
     id: string,
-    name: string,
-    sub: string,
+    name?: string | null,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    routines?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    sections?:  {
+      __typename: "ModelSectionWorkoutConnection",
+      items:  Array< {
+        __typename: "SectionWorkout",
+        id: string,
+        sectionID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     type: WorkoutType,
     logs?:  {
       __typename: "ModelLogConnection",
@@ -2065,6 +3608,7 @@ export type OnCreateWorkoutSubscription = {
         createdAt: string,
         updatedAt: string,
         workoutLogsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2076,20 +3620,61 @@ export type OnCreateWorkoutSubscription = {
     createdAt: string,
     updatedAt: string,
     userWorkoutsId?: string | null,
-    sectionWorkoutsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateWorkoutSubscriptionVariables = {
-  filter?: ModelSubscriptionWorkoutFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateWorkoutSubscription = {
   onUpdateWorkout?:  {
     __typename: "Workout",
     id: string,
-    name: string,
-    sub: string,
+    name?: string | null,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    routines?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    sections?:  {
+      __typename: "ModelSectionWorkoutConnection",
+      items:  Array< {
+        __typename: "SectionWorkout",
+        id: string,
+        sectionID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     type: WorkoutType,
     logs?:  {
       __typename: "ModelLogConnection",
@@ -2103,6 +3688,7 @@ export type OnUpdateWorkoutSubscription = {
         createdAt: string,
         updatedAt: string,
         workoutLogsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2114,20 +3700,61 @@ export type OnUpdateWorkoutSubscription = {
     createdAt: string,
     updatedAt: string,
     userWorkoutsId?: string | null,
-    sectionWorkoutsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteWorkoutSubscriptionVariables = {
-  filter?: ModelSubscriptionWorkoutFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteWorkoutSubscription = {
   onDeleteWorkout?:  {
     __typename: "Workout",
     id: string,
-    name: string,
-    sub: string,
+    name?: string | null,
+    user:  {
+      __typename: "User",
+      id: string,
+      username: string,
+      workouts?:  {
+        __typename: "ModelWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      routines?:  {
+        __typename: "ModelRoutineConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      owner?: string | null,
+    },
+    routines?:  {
+      __typename: "ModelRoutineWorkoutConnection",
+      items:  Array< {
+        __typename: "RoutineWorkout",
+        id: string,
+        routineID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    sections?:  {
+      __typename: "ModelSectionWorkoutConnection",
+      items:  Array< {
+        __typename: "SectionWorkout",
+        id: string,
+        sectionID: string,
+        workoutID: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     type: WorkoutType,
     logs?:  {
       __typename: "ModelLogConnection",
@@ -2141,6 +3768,7 @@ export type OnDeleteWorkoutSubscription = {
         createdAt: string,
         updatedAt: string,
         workoutLogsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2152,12 +3780,12 @@ export type OnDeleteWorkoutSubscription = {
     createdAt: string,
     updatedAt: string,
     userWorkoutsId?: string | null,
-    sectionWorkoutsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateLogSubscriptionVariables = {
-  filter?: ModelSubscriptionLogFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateLogSubscription = {
@@ -2166,6 +3794,41 @@ export type OnCreateLogSubscription = {
     id: string,
     name: string,
     timestamp?: number | null,
+    workout?:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    } | null,
     sets?:  {
       __typename: "ModelSetConnection",
       items:  Array< {
@@ -2178,6 +3841,7 @@ export type OnCreateLogSubscription = {
         createdAt: string,
         updatedAt: string,
         logSetsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2186,11 +3850,12 @@ export type OnCreateLogSubscription = {
     createdAt: string,
     updatedAt: string,
     workoutLogsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateLogSubscriptionVariables = {
-  filter?: ModelSubscriptionLogFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateLogSubscription = {
@@ -2199,6 +3864,41 @@ export type OnUpdateLogSubscription = {
     id: string,
     name: string,
     timestamp?: number | null,
+    workout?:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    } | null,
     sets?:  {
       __typename: "ModelSetConnection",
       items:  Array< {
@@ -2211,6 +3911,7 @@ export type OnUpdateLogSubscription = {
         createdAt: string,
         updatedAt: string,
         logSetsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2219,11 +3920,12 @@ export type OnUpdateLogSubscription = {
     createdAt: string,
     updatedAt: string,
     workoutLogsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteLogSubscriptionVariables = {
-  filter?: ModelSubscriptionLogFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteLogSubscription = {
@@ -2232,6 +3934,41 @@ export type OnDeleteLogSubscription = {
     id: string,
     name: string,
     timestamp?: number | null,
+    workout?:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    } | null,
     sets?:  {
       __typename: "ModelSetConnection",
       items:  Array< {
@@ -2244,6 +3981,7 @@ export type OnDeleteLogSubscription = {
         createdAt: string,
         updatedAt: string,
         logSetsId?: string | null,
+        owner?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -2252,17 +3990,49 @@ export type OnDeleteLogSubscription = {
     createdAt: string,
     updatedAt: string,
     workoutLogsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateSetSubscriptionVariables = {
-  filter?: ModelSubscriptionSetFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateSetSubscription = {
   onCreateSet?:  {
     __typename: "Set",
     id: string,
+    log:  {
+      __typename: "Log",
+      id: string,
+      name: string,
+      timestamp?: number | null,
+      workout?:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      } | null,
+      sets?:  {
+        __typename: "ModelSetConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      createdAt: string,
+      updatedAt: string,
+      workoutLogsId?: string | null,
+      owner?: string | null,
+    },
     weight?: number | null,
     reps?: number | null,
     duration?: number | null,
@@ -2270,17 +4040,49 @@ export type OnCreateSetSubscription = {
     createdAt: string,
     updatedAt: string,
     logSetsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateSetSubscriptionVariables = {
-  filter?: ModelSubscriptionSetFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateSetSubscription = {
   onUpdateSet?:  {
     __typename: "Set",
     id: string,
+    log:  {
+      __typename: "Log",
+      id: string,
+      name: string,
+      timestamp?: number | null,
+      workout?:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      } | null,
+      sets?:  {
+        __typename: "ModelSetConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      createdAt: string,
+      updatedAt: string,
+      workoutLogsId?: string | null,
+      owner?: string | null,
+    },
     weight?: number | null,
     reps?: number | null,
     duration?: number | null,
@@ -2288,17 +4090,49 @@ export type OnUpdateSetSubscription = {
     createdAt: string,
     updatedAt: string,
     logSetsId?: string | null,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteSetSubscriptionVariables = {
-  filter?: ModelSubscriptionSetFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteSetSubscription = {
   onDeleteSet?:  {
     __typename: "Set",
     id: string,
+    log:  {
+      __typename: "Log",
+      id: string,
+      name: string,
+      timestamp?: number | null,
+      workout?:  {
+        __typename: "Workout",
+        id: string,
+        name?: string | null,
+        type: WorkoutType,
+        notes?: string | null,
+        units?: WorkoutUnitType | null,
+        targetSetRange?: Array< number | null > | null,
+        targetRepRange?: Array< number | null > | null,
+        targetDurationRange?: Array< number | null > | null,
+        createdAt: string,
+        updatedAt: string,
+        userWorkoutsId?: string | null,
+        owner?: string | null,
+      } | null,
+      sets?:  {
+        __typename: "ModelSetConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      createdAt: string,
+      updatedAt: string,
+      workoutLogsId?: string | null,
+      owner?: string | null,
+    },
     weight?: number | null,
     reps?: number | null,
     duration?: number | null,
@@ -2306,5 +4140,471 @@ export type OnDeleteSetSubscription = {
     createdAt: string,
     updatedAt: string,
     logSetsId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnCreateRoutineWorkoutSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateRoutineWorkoutSubscription = {
+  onCreateRoutineWorkout?:  {
+    __typename: "RoutineWorkout",
+    id: string,
+    routineID: string,
+    workoutID: string,
+    routine:  {
+      __typename: "Routine",
+      id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      name: string,
+      sub: string,
+      days?: Array< number | null > | null,
+      sections?:  {
+        __typename: "ModelSectionConnection",
+        nextToken?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userRoutinesId?: string | null,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateRoutineWorkoutSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateRoutineWorkoutSubscription = {
+  onUpdateRoutineWorkout?:  {
+    __typename: "RoutineWorkout",
+    id: string,
+    routineID: string,
+    workoutID: string,
+    routine:  {
+      __typename: "Routine",
+      id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      name: string,
+      sub: string,
+      days?: Array< number | null > | null,
+      sections?:  {
+        __typename: "ModelSectionConnection",
+        nextToken?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userRoutinesId?: string | null,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteRoutineWorkoutSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteRoutineWorkoutSubscription = {
+  onDeleteRoutineWorkout?:  {
+    __typename: "RoutineWorkout",
+    id: string,
+    routineID: string,
+    workoutID: string,
+    routine:  {
+      __typename: "Routine",
+      id: string,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      name: string,
+      sub: string,
+      days?: Array< number | null > | null,
+      sections?:  {
+        __typename: "ModelSectionConnection",
+        nextToken?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      userRoutinesId?: string | null,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnCreateSectionWorkoutSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateSectionWorkoutSubscription = {
+  onCreateSectionWorkout?:  {
+    __typename: "SectionWorkout",
+    id: string,
+    sectionID: string,
+    workoutID: string,
+    section:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      routine?:  {
+        __typename: "Routine",
+        id: string,
+        name: string,
+        sub: string,
+        days?: Array< number | null > | null,
+        notes?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        userRoutinesId?: string | null,
+        owner?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      routineSectionsId: string,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateSectionWorkoutSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateSectionWorkoutSubscription = {
+  onUpdateSectionWorkout?:  {
+    __typename: "SectionWorkout",
+    id: string,
+    sectionID: string,
+    workoutID: string,
+    section:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      routine?:  {
+        __typename: "Routine",
+        id: string,
+        name: string,
+        sub: string,
+        days?: Array< number | null > | null,
+        notes?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        userRoutinesId?: string | null,
+        owner?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      routineSectionsId: string,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteSectionWorkoutSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteSectionWorkoutSubscription = {
+  onDeleteSectionWorkout?:  {
+    __typename: "SectionWorkout",
+    id: string,
+    sectionID: string,
+    workoutID: string,
+    section:  {
+      __typename: "Section",
+      id: string,
+      name: string,
+      routine?:  {
+        __typename: "Routine",
+        id: string,
+        name: string,
+        sub: string,
+        days?: Array< number | null > | null,
+        notes?: string | null,
+        createdAt: string,
+        updatedAt: string,
+        userRoutinesId?: string | null,
+        owner?: string | null,
+      } | null,
+      workouts?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      createdAt: string,
+      updatedAt: string,
+      routineSectionsId: string,
+      owner?: string | null,
+    },
+    workout:  {
+      __typename: "Workout",
+      id: string,
+      name?: string | null,
+      user:  {
+        __typename: "User",
+        id: string,
+        username: string,
+        createdAt: string,
+        updatedAt: string,
+        owner?: string | null,
+      },
+      routines?:  {
+        __typename: "ModelRoutineWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      sections?:  {
+        __typename: "ModelSectionWorkoutConnection",
+        nextToken?: string | null,
+      } | null,
+      type: WorkoutType,
+      logs?:  {
+        __typename: "ModelLogConnection",
+        nextToken?: string | null,
+      } | null,
+      notes?: string | null,
+      units?: WorkoutUnitType | null,
+      targetSetRange?: Array< number | null > | null,
+      targetRepRange?: Array< number | null > | null,
+      targetDurationRange?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+      userWorkoutsId?: string | null,
+      owner?: string | null,
+    },
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
   } | null,
 };

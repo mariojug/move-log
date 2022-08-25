@@ -3,14 +3,14 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
-    onCreateUser(filter: $filter) {
-      sub
+  subscription OnCreateUser($owner: String) {
+    onCreateUser(owner: $owner) {
+      id
+      username
       workouts {
         items {
           id
           name
-          sub
           type
           notes
           units
@@ -20,7 +20,7 @@ export const onCreateUser = /* GraphQL */ `
           createdAt
           updatedAt
           userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
@@ -34,24 +34,25 @@ export const onCreateUser = /* GraphQL */ `
           createdAt
           updatedAt
           userRoutinesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
-    onUpdateUser(filter: $filter) {
-      sub
+  subscription OnUpdateUser($owner: String) {
+    onUpdateUser(owner: $owner) {
+      id
+      username
       workouts {
         items {
           id
           name
-          sub
           type
           notes
           units
@@ -61,7 +62,7 @@ export const onUpdateUser = /* GraphQL */ `
           createdAt
           updatedAt
           userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
@@ -75,24 +76,25 @@ export const onUpdateUser = /* GraphQL */ `
           createdAt
           updatedAt
           userRoutinesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
-    onDeleteUser(filter: $filter) {
-      sub
+  subscription OnDeleteUser($owner: String) {
+    onDeleteUser(owner: $owner) {
+      id
+      username
       workouts {
         items {
           id
           name
-          sub
           type
           notes
           units
@@ -102,7 +104,7 @@ export const onDeleteUser = /* GraphQL */ `
           createdAt
           updatedAt
           userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
@@ -116,19 +118,33 @@ export const onDeleteUser = /* GraphQL */ `
           createdAt
           updatedAt
           userRoutinesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onCreateRoutine = /* GraphQL */ `
-  subscription OnCreateRoutine($filter: ModelSubscriptionRoutineFilterInput) {
-    onCreateRoutine(filter: $filter) {
+  subscription OnCreateRoutine($owner: String) {
+    onCreateRoutine(owner: $owner) {
       id
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
       name
       sub
       days
@@ -136,10 +152,21 @@ export const onCreateRoutine = /* GraphQL */ `
         items {
           id
           name
-          sub
           createdAt
           updatedAt
           routineSectionsId
+          owner
+        }
+        nextToken
+      }
+      workouts {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
       }
@@ -147,13 +174,27 @@ export const onCreateRoutine = /* GraphQL */ `
       createdAt
       updatedAt
       userRoutinesId
+      owner
     }
   }
 `;
 export const onUpdateRoutine = /* GraphQL */ `
-  subscription OnUpdateRoutine($filter: ModelSubscriptionRoutineFilterInput) {
-    onUpdateRoutine(filter: $filter) {
+  subscription OnUpdateRoutine($owner: String) {
+    onUpdateRoutine(owner: $owner) {
       id
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
       name
       sub
       days
@@ -161,10 +202,21 @@ export const onUpdateRoutine = /* GraphQL */ `
         items {
           id
           name
-          sub
           createdAt
           updatedAt
           routineSectionsId
+          owner
+        }
+        nextToken
+      }
+      workouts {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
       }
@@ -172,13 +224,27 @@ export const onUpdateRoutine = /* GraphQL */ `
       createdAt
       updatedAt
       userRoutinesId
+      owner
     }
   }
 `;
 export const onDeleteRoutine = /* GraphQL */ `
-  subscription OnDeleteRoutine($filter: ModelSubscriptionRoutineFilterInput) {
-    onDeleteRoutine(filter: $filter) {
+  subscription OnDeleteRoutine($owner: String) {
+    onDeleteRoutine(owner: $owner) {
       id
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
       name
       sub
       days
@@ -186,10 +252,21 @@ export const onDeleteRoutine = /* GraphQL */ `
         items {
           id
           name
-          sub
           createdAt
           updatedAt
           routineSectionsId
+          owner
+        }
+        nextToken
+      }
+      workouts {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
       }
@@ -197,119 +274,540 @@ export const onDeleteRoutine = /* GraphQL */ `
       createdAt
       updatedAt
       userRoutinesId
+      owner
     }
   }
 `;
 export const onCreateSection = /* GraphQL */ `
-  subscription OnCreateSection($filter: ModelSubscriptionSectionFilterInput) {
-    onCreateSection(filter: $filter) {
+  subscription OnCreateSection($owner: String) {
+    onCreateSection(owner: $owner) {
       id
       name
-      sub
       routine {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
         name
         sub
         days
         sections {
           nextToken
         }
+        workouts {
+          nextToken
+        }
         notes
         createdAt
         updatedAt
         userRoutinesId
+        owner
       }
       workouts {
         items {
           id
-          name
-          sub
-          type
-          notes
-          units
-          targetSetRange
-          targetRepRange
-          targetDurationRange
+          sectionID
+          workoutID
           createdAt
           updatedAt
-          userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
       createdAt
       updatedAt
       routineSectionsId
+      owner
     }
   }
 `;
 export const onUpdateSection = /* GraphQL */ `
-  subscription OnUpdateSection($filter: ModelSubscriptionSectionFilterInput) {
-    onUpdateSection(filter: $filter) {
+  subscription OnUpdateSection($owner: String) {
+    onUpdateSection(owner: $owner) {
       id
       name
-      sub
       routine {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
         name
         sub
         days
         sections {
           nextToken
         }
+        workouts {
+          nextToken
+        }
         notes
         createdAt
         updatedAt
         userRoutinesId
+        owner
       }
       workouts {
         items {
           id
-          name
-          sub
-          type
-          notes
-          units
-          targetSetRange
-          targetRepRange
-          targetDurationRange
+          sectionID
+          workoutID
           createdAt
           updatedAt
-          userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
         nextToken
       }
       createdAt
       updatedAt
       routineSectionsId
+      owner
     }
   }
 `;
 export const onDeleteSection = /* GraphQL */ `
-  subscription OnDeleteSection($filter: ModelSubscriptionSectionFilterInput) {
-    onDeleteSection(filter: $filter) {
+  subscription OnDeleteSection($owner: String) {
+    onDeleteSection(owner: $owner) {
       id
       name
-      sub
       routine {
         id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
         name
         sub
         days
         sections {
           nextToken
         }
+        workouts {
+          nextToken
+        }
         notes
         createdAt
         updatedAt
         userRoutinesId
+        owner
       }
       workouts {
         items {
           id
+          sectionID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+      routineSectionsId
+      owner
+    }
+  }
+`;
+export const onCreateWorkout = /* GraphQL */ `
+  subscription OnCreateWorkout($owner: String) {
+    onCreateWorkout(owner: $owner) {
+      id
+      name
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      routines {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      sections {
+        items {
+          id
+          sectionID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      type
+      logs {
+        items {
+          id
           name
-          sub
+          timestamp
+          notes
+          units
+          createdAt
+          updatedAt
+          workoutLogsId
+          owner
+        }
+        nextToken
+      }
+      notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
+      createdAt
+      updatedAt
+      userWorkoutsId
+      owner
+    }
+  }
+`;
+export const onUpdateWorkout = /* GraphQL */ `
+  subscription OnUpdateWorkout($owner: String) {
+    onUpdateWorkout(owner: $owner) {
+      id
+      name
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      routines {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      sections {
+        items {
+          id
+          sectionID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      type
+      logs {
+        items {
+          id
+          name
+          timestamp
+          notes
+          units
+          createdAt
+          updatedAt
+          workoutLogsId
+          owner
+        }
+        nextToken
+      }
+      notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
+      createdAt
+      updatedAt
+      userWorkoutsId
+      owner
+    }
+  }
+`;
+export const onDeleteWorkout = /* GraphQL */ `
+  subscription OnDeleteWorkout($owner: String) {
+    onDeleteWorkout(owner: $owner) {
+      id
+      name
+      user {
+        id
+        username
+        workouts {
+          nextToken
+        }
+        routines {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      routines {
+        items {
+          id
+          routineID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      sections {
+        items {
+          id
+          sectionID
+          workoutID
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
+      type
+      logs {
+        items {
+          id
+          name
+          timestamp
+          notes
+          units
+          createdAt
+          updatedAt
+          workoutLogsId
+          owner
+        }
+        nextToken
+      }
+      notes
+      units
+      targetSetRange
+      targetRepRange
+      targetDurationRange
+      createdAt
+      updatedAt
+      userWorkoutsId
+      owner
+    }
+  }
+`;
+export const onCreateLog = /* GraphQL */ `
+  subscription OnCreateLog($owner: String) {
+    onCreateLog(owner: $owner) {
+      id
+      name
+      timestamp
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      sets {
+        items {
+          id
+          weight
+          reps
+          duration
+          units
+          createdAt
+          updatedAt
+          logSetsId
+          owner
+        }
+        nextToken
+      }
+      notes
+      units
+      createdAt
+      updatedAt
+      workoutLogsId
+      owner
+    }
+  }
+`;
+export const onUpdateLog = /* GraphQL */ `
+  subscription OnUpdateLog($owner: String) {
+    onUpdateLog(owner: $owner) {
+      id
+      name
+      timestamp
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      sets {
+        items {
+          id
+          weight
+          reps
+          duration
+          units
+          createdAt
+          updatedAt
+          logSetsId
+          owner
+        }
+        nextToken
+      }
+      notes
+      units
+      createdAt
+      updatedAt
+      workoutLogsId
+      owner
+    }
+  }
+`;
+export const onDeleteLog = /* GraphQL */ `
+  subscription OnDeleteLog($owner: String) {
+    onDeleteLog(owner: $owner) {
+      id
+      name
+      timestamp
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      sets {
+        items {
+          id
+          weight
+          reps
+          duration
+          units
+          createdAt
+          updatedAt
+          logSetsId
+          owner
+        }
+        nextToken
+      }
+      notes
+      units
+      createdAt
+      updatedAt
+      workoutLogsId
+      owner
+    }
+  }
+`;
+export const onCreateSet = /* GraphQL */ `
+  subscription OnCreateSet($owner: String) {
+    onCreateSet(owner: $owner) {
+      id
+      log {
+        id
+        name
+        timestamp
+        workout {
+          id
+          name
           type
           notes
           units
@@ -319,197 +817,18 @@ export const onDeleteSection = /* GraphQL */ `
           createdAt
           updatedAt
           userWorkoutsId
-          sectionWorkoutsId
+          owner
         }
-        nextToken
-      }
-      createdAt
-      updatedAt
-      routineSectionsId
-    }
-  }
-`;
-export const onCreateWorkout = /* GraphQL */ `
-  subscription OnCreateWorkout($filter: ModelSubscriptionWorkoutFilterInput) {
-    onCreateWorkout(filter: $filter) {
-      id
-      name
-      sub
-      type
-      logs {
-        items {
-          id
-          name
-          timestamp
-          notes
-          units
-          createdAt
-          updatedAt
-          workoutLogsId
+        sets {
+          nextToken
         }
-        nextToken
+        notes
+        units
+        createdAt
+        updatedAt
+        workoutLogsId
+        owner
       }
-      notes
-      units
-      targetSetRange
-      targetRepRange
-      targetDurationRange
-      createdAt
-      updatedAt
-      userWorkoutsId
-      sectionWorkoutsId
-    }
-  }
-`;
-export const onUpdateWorkout = /* GraphQL */ `
-  subscription OnUpdateWorkout($filter: ModelSubscriptionWorkoutFilterInput) {
-    onUpdateWorkout(filter: $filter) {
-      id
-      name
-      sub
-      type
-      logs {
-        items {
-          id
-          name
-          timestamp
-          notes
-          units
-          createdAt
-          updatedAt
-          workoutLogsId
-        }
-        nextToken
-      }
-      notes
-      units
-      targetSetRange
-      targetRepRange
-      targetDurationRange
-      createdAt
-      updatedAt
-      userWorkoutsId
-      sectionWorkoutsId
-    }
-  }
-`;
-export const onDeleteWorkout = /* GraphQL */ `
-  subscription OnDeleteWorkout($filter: ModelSubscriptionWorkoutFilterInput) {
-    onDeleteWorkout(filter: $filter) {
-      id
-      name
-      sub
-      type
-      logs {
-        items {
-          id
-          name
-          timestamp
-          notes
-          units
-          createdAt
-          updatedAt
-          workoutLogsId
-        }
-        nextToken
-      }
-      notes
-      units
-      targetSetRange
-      targetRepRange
-      targetDurationRange
-      createdAt
-      updatedAt
-      userWorkoutsId
-      sectionWorkoutsId
-    }
-  }
-`;
-export const onCreateLog = /* GraphQL */ `
-  subscription OnCreateLog($filter: ModelSubscriptionLogFilterInput) {
-    onCreateLog(filter: $filter) {
-      id
-      name
-      timestamp
-      sets {
-        items {
-          id
-          weight
-          reps
-          duration
-          units
-          createdAt
-          updatedAt
-          logSetsId
-        }
-        nextToken
-      }
-      notes
-      units
-      createdAt
-      updatedAt
-      workoutLogsId
-    }
-  }
-`;
-export const onUpdateLog = /* GraphQL */ `
-  subscription OnUpdateLog($filter: ModelSubscriptionLogFilterInput) {
-    onUpdateLog(filter: $filter) {
-      id
-      name
-      timestamp
-      sets {
-        items {
-          id
-          weight
-          reps
-          duration
-          units
-          createdAt
-          updatedAt
-          logSetsId
-        }
-        nextToken
-      }
-      notes
-      units
-      createdAt
-      updatedAt
-      workoutLogsId
-    }
-  }
-`;
-export const onDeleteLog = /* GraphQL */ `
-  subscription OnDeleteLog($filter: ModelSubscriptionLogFilterInput) {
-    onDeleteLog(filter: $filter) {
-      id
-      name
-      timestamp
-      sets {
-        items {
-          id
-          weight
-          reps
-          duration
-          units
-          createdAt
-          updatedAt
-          logSetsId
-        }
-        nextToken
-      }
-      notes
-      units
-      createdAt
-      updatedAt
-      workoutLogsId
-    }
-  }
-`;
-export const onCreateSet = /* GraphQL */ `
-  subscription OnCreateSet($filter: ModelSubscriptionSetFilterInput) {
-    onCreateSet(filter: $filter) {
-      id
       weight
       reps
       duration
@@ -517,13 +836,42 @@ export const onCreateSet = /* GraphQL */ `
       createdAt
       updatedAt
       logSetsId
+      owner
     }
   }
 `;
 export const onUpdateSet = /* GraphQL */ `
-  subscription OnUpdateSet($filter: ModelSubscriptionSetFilterInput) {
-    onUpdateSet(filter: $filter) {
+  subscription OnUpdateSet($owner: String) {
+    onUpdateSet(owner: $owner) {
       id
+      log {
+        id
+        name
+        timestamp
+        workout {
+          id
+          name
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          owner
+        }
+        sets {
+          nextToken
+        }
+        notes
+        units
+        createdAt
+        updatedAt
+        workoutLogsId
+        owner
+      }
       weight
       reps
       duration
@@ -531,13 +879,42 @@ export const onUpdateSet = /* GraphQL */ `
       createdAt
       updatedAt
       logSetsId
+      owner
     }
   }
 `;
 export const onDeleteSet = /* GraphQL */ `
-  subscription OnDeleteSet($filter: ModelSubscriptionSetFilterInput) {
-    onDeleteSet(filter: $filter) {
+  subscription OnDeleteSet($owner: String) {
+    onDeleteSet(owner: $owner) {
       id
+      log {
+        id
+        name
+        timestamp
+        workout {
+          id
+          name
+          type
+          notes
+          units
+          targetSetRange
+          targetRepRange
+          targetDurationRange
+          createdAt
+          updatedAt
+          userWorkoutsId
+          owner
+        }
+        sets {
+          nextToken
+        }
+        notes
+        units
+        createdAt
+        updatedAt
+        workoutLogsId
+        owner
+      }
       weight
       reps
       duration
@@ -545,6 +922,397 @@ export const onDeleteSet = /* GraphQL */ `
       createdAt
       updatedAt
       logSetsId
+      owner
+    }
+  }
+`;
+export const onCreateRoutineWorkout = /* GraphQL */ `
+  subscription OnCreateRoutineWorkout($owner: String) {
+    onCreateRoutineWorkout(owner: $owner) {
+      id
+      routineID
+      workoutID
+      routine {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        name
+        sub
+        days
+        sections {
+          nextToken
+        }
+        workouts {
+          nextToken
+        }
+        notes
+        createdAt
+        updatedAt
+        userRoutinesId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateRoutineWorkout = /* GraphQL */ `
+  subscription OnUpdateRoutineWorkout($owner: String) {
+    onUpdateRoutineWorkout(owner: $owner) {
+      id
+      routineID
+      workoutID
+      routine {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        name
+        sub
+        days
+        sections {
+          nextToken
+        }
+        workouts {
+          nextToken
+        }
+        notes
+        createdAt
+        updatedAt
+        userRoutinesId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteRoutineWorkout = /* GraphQL */ `
+  subscription OnDeleteRoutineWorkout($owner: String) {
+    onDeleteRoutineWorkout(owner: $owner) {
+      id
+      routineID
+      workoutID
+      routine {
+        id
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        name
+        sub
+        days
+        sections {
+          nextToken
+        }
+        workouts {
+          nextToken
+        }
+        notes
+        createdAt
+        updatedAt
+        userRoutinesId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onCreateSectionWorkout = /* GraphQL */ `
+  subscription OnCreateSectionWorkout($owner: String) {
+    onCreateSectionWorkout(owner: $owner) {
+      id
+      sectionID
+      workoutID
+      section {
+        id
+        name
+        routine {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+          owner
+        }
+        workouts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        routineSectionsId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateSectionWorkout = /* GraphQL */ `
+  subscription OnUpdateSectionWorkout($owner: String) {
+    onUpdateSectionWorkout(owner: $owner) {
+      id
+      sectionID
+      workoutID
+      section {
+        id
+        name
+        routine {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+          owner
+        }
+        workouts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        routineSectionsId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteSectionWorkout = /* GraphQL */ `
+  subscription OnDeleteSectionWorkout($owner: String) {
+    onDeleteSectionWorkout(owner: $owner) {
+      id
+      sectionID
+      workoutID
+      section {
+        id
+        name
+        routine {
+          id
+          name
+          sub
+          days
+          notes
+          createdAt
+          updatedAt
+          userRoutinesId
+          owner
+        }
+        workouts {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        routineSectionsId
+        owner
+      }
+      workout {
+        id
+        name
+        user {
+          id
+          username
+          createdAt
+          updatedAt
+          owner
+        }
+        routines {
+          nextToken
+        }
+        sections {
+          nextToken
+        }
+        type
+        logs {
+          nextToken
+        }
+        notes
+        units
+        targetSetRange
+        targetRepRange
+        targetDurationRange
+        createdAt
+        updatedAt
+        userWorkoutsId
+        owner
+      }
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;

@@ -17,7 +17,6 @@ export type HomeStackParamList = {
   Routine: {
     name: string;
     id: string;
-    sub: string;
   };
   Workout: undefined;
 };
@@ -29,7 +28,7 @@ type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;
 // TODO: add logic to pull all routines belonging to a user and display each as link
 // TODO: add logic to create routines: name, notes, days of week (optional)
 // TODO: add logic to delete routines
-const Home: React.FC<HomeProps> = (props: HomeProps) => {
+const Home: React.FC<HomeProps> = ({ route }: HomeProps) => {
   return (
     <HomeStack.Navigator
       initialRouteName="Routines"

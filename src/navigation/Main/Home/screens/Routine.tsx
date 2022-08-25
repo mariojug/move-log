@@ -4,14 +4,13 @@ import React, { useState, useEffect } from "react";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { HomeStackParamList } from "..";
 
-import { theme } from "../../../../theme";
 import styles from "../styles";
 
 type RoutineProps = NativeStackScreenProps<HomeStackParamList, "Routine">;
 
 const Routine: React.FC<RoutineProps> = ({ navigation, route }) => {
   const params = route.params;
-  console.log(params.id, params.sub, params.name);
+  console.log(params.id, params.name);
 
   const [workoutComponents, setWorkoutComponents] = useState([]);
 

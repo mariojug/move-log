@@ -1,7 +1,7 @@
 import { Text, SafeAreaView, ScrollView, Alert } from "react-native";
 import React from "react";
 import { StackActions } from "@react-navigation/native";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 
 import { Auth } from "aws-amplify";
 
@@ -24,7 +24,14 @@ type ForgotPasswordProps = NativeStackScreenProps<
 const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
   const { control, handleSubmit } = useForm();
 
-  const handlePressSendLink = () => navigation.navigate("ResetPassword");
+  const handlePressSendLink = async (data: FieldValues) => {
+    try {
+      const response = await Auth.forgotPassword(data.username);
+      navigation.navigate("ResetPassword", { username: data.username });
+    } catch (err: any) {
+      Alert.alert("Error", err.message);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.root}>
