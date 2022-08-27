@@ -44,10 +44,9 @@ type Routine
   id: ID! @primaryKey
   user: User! @belongsTo
   name: String!
-  sub: String!
   days: [Int]
   sections: [Section]! @hasMany
-  workouts: [Workout]! @manyToMany(relationName: "RoutineWorkout")
+  workouts: [Workout] @manyToMany(relationName: "RoutineWorkout")
   notes: String
 }
 
@@ -62,7 +61,8 @@ type Section
   id: ID! @primaryKey
   name: String!
   routine: Routine @belongsTo
-  workouts: [Workout] @manyToMany(relationName: " SectionWorkout")
+  workouts: [Workout] @manyToMany(relationName: "SectionWorkout")
+  notes: String
 }
 
 type Workout

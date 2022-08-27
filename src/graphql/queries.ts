@@ -28,7 +28,6 @@ export const getUser = /* GraphQL */ `
         items {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -94,12 +93,12 @@ export const getRoutine = /* GraphQL */ `
         owner
       }
       name
-      sub
       days
       sections {
         items {
           id
           name
+          notes
           createdAt
           updatedAt
           routineSectionsId
@@ -151,7 +150,6 @@ export const listRoutines = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -184,7 +182,6 @@ export const getSection = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -209,6 +206,7 @@ export const getSection = /* GraphQL */ `
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
       routineSectionsId
@@ -237,7 +235,6 @@ export const listSections = /* GraphQL */ `
         routine {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -248,6 +245,7 @@ export const listSections = /* GraphQL */ `
         workouts {
           nextToken
         }
+        notes
         createdAt
         updatedAt
         routineSectionsId
@@ -579,7 +577,6 @@ export const getRoutineWorkout = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -643,7 +640,6 @@ export const listRoutineWorkouts = /* GraphQL */ `
         routine {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -685,7 +681,6 @@ export const getSectionWorkout = /* GraphQL */ `
         routine {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -696,6 +691,7 @@ export const getSectionWorkout = /* GraphQL */ `
         workouts {
           nextToken
         }
+        notes
         createdAt
         updatedAt
         routineSectionsId
@@ -751,6 +747,7 @@ export const listSectionWorkouts = /* GraphQL */ `
         section {
           id
           name
+          notes
           createdAt
           updatedAt
           routineSectionsId

@@ -7,7 +7,6 @@ import { Auth } from "aws-amplify";
 import CustomInput from "../../../components/CustomInput";
 import CustomButton from "../../../components/CustomButton";
 
-import BackButtonHeader from "../../../components/BackButtonHeader";
 import SocialSignInButtons from "./SocialSignInButtons";
 
 import { UsernameRegex } from "../../../regex";
@@ -16,6 +15,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import styles from "../styles";
 import { StackActions } from "@react-navigation/native";
+import CustomText from "../../../components/CustomText";
 
 type SignInProps = NativeStackScreenProps<LandingStackParamList, "SignIn">;
 
@@ -44,9 +44,10 @@ const SignIn = ({ navigation }: SignInProps) => {
 
   return (
     <SafeAreaView style={styles.root}>
-      <BackButtonHeader hideButton />
       <ScrollView style={styles.container}>
-        <Text style={styles.header}>Move Log</Text>
+        <CustomText style={styles.header} weight={700}>
+          Move Log
+        </CustomText>
         <CustomInput
           name="username"
           control={control}
@@ -89,13 +90,13 @@ const SignIn = ({ navigation }: SignInProps) => {
         <CustomButton
           text="Forgot password?"
           onPress={handlePressForgotPassword}
-          type="secondary"
+          variant="secondary"
         />
         <SocialSignInButtons />
         <CustomButton
           text="Don't have an account? Create one"
           onPress={handlePressSignUp}
-          type="secondary"
+          variant="secondary"
         />
       </ScrollView>
     </SafeAreaView>

@@ -28,7 +28,6 @@ export const onCreateUser = /* GraphQL */ `
         items {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -70,7 +69,6 @@ export const onUpdateUser = /* GraphQL */ `
         items {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -112,7 +110,6 @@ export const onDeleteUser = /* GraphQL */ `
         items {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -146,12 +143,12 @@ export const onCreateRoutine = /* GraphQL */ `
         owner
       }
       name
-      sub
       days
       sections {
         items {
           id
           name
+          notes
           createdAt
           updatedAt
           routineSectionsId
@@ -196,12 +193,12 @@ export const onUpdateRoutine = /* GraphQL */ `
         owner
       }
       name
-      sub
       days
       sections {
         items {
           id
           name
+          notes
           createdAt
           updatedAt
           routineSectionsId
@@ -246,12 +243,12 @@ export const onDeleteRoutine = /* GraphQL */ `
         owner
       }
       name
-      sub
       days
       sections {
         items {
           id
           name
+          notes
           createdAt
           updatedAt
           routineSectionsId
@@ -293,7 +290,6 @@ export const onCreateSection = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -318,6 +314,7 @@ export const onCreateSection = /* GraphQL */ `
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
       routineSectionsId
@@ -340,7 +337,6 @@ export const onUpdateSection = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -365,6 +361,7 @@ export const onUpdateSection = /* GraphQL */ `
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
       routineSectionsId
@@ -387,7 +384,6 @@ export const onDeleteSection = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -412,6 +408,7 @@ export const onDeleteSection = /* GraphQL */ `
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
       routineSectionsId
@@ -942,7 +939,6 @@ export const onCreateRoutineWorkout = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -1008,7 +1004,6 @@ export const onUpdateRoutineWorkout = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -1074,7 +1069,6 @@ export const onDeleteRoutineWorkout = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -1136,7 +1130,6 @@ export const onCreateSectionWorkout = /* GraphQL */ `
         routine {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -1147,6 +1140,7 @@ export const onCreateSectionWorkout = /* GraphQL */ `
         workouts {
           nextToken
         }
+        notes
         createdAt
         updatedAt
         routineSectionsId
@@ -1200,7 +1194,6 @@ export const onUpdateSectionWorkout = /* GraphQL */ `
         routine {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -1211,6 +1204,7 @@ export const onUpdateSectionWorkout = /* GraphQL */ `
         workouts {
           nextToken
         }
+        notes
         createdAt
         updatedAt
         routineSectionsId
@@ -1264,7 +1258,6 @@ export const onDeleteSectionWorkout = /* GraphQL */ `
         routine {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -1275,6 +1268,7 @@ export const onDeleteSectionWorkout = /* GraphQL */ `
         workouts {
           nextToken
         }
+        notes
         createdAt
         updatedAt
         routineSectionsId

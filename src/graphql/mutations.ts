@@ -31,7 +31,6 @@ export const createUser = /* GraphQL */ `
         items {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -76,7 +75,6 @@ export const updateUser = /* GraphQL */ `
         items {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -121,7 +119,6 @@ export const deleteUser = /* GraphQL */ `
         items {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -158,12 +155,12 @@ export const createRoutine = /* GraphQL */ `
         owner
       }
       name
-      sub
       days
       sections {
         items {
           id
           name
+          notes
           createdAt
           updatedAt
           routineSectionsId
@@ -211,12 +208,12 @@ export const updateRoutine = /* GraphQL */ `
         owner
       }
       name
-      sub
       days
       sections {
         items {
           id
           name
+          notes
           createdAt
           updatedAt
           routineSectionsId
@@ -264,12 +261,12 @@ export const deleteRoutine = /* GraphQL */ `
         owner
       }
       name
-      sub
       days
       sections {
         items {
           id
           name
+          notes
           createdAt
           updatedAt
           routineSectionsId
@@ -314,7 +311,6 @@ export const createSection = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -339,6 +335,7 @@ export const createSection = /* GraphQL */ `
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
       routineSectionsId
@@ -364,7 +361,6 @@ export const updateSection = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -389,6 +385,7 @@ export const updateSection = /* GraphQL */ `
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
       routineSectionsId
@@ -414,7 +411,6 @@ export const deleteSection = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -439,6 +435,7 @@ export const deleteSection = /* GraphQL */ `
         }
         nextToken
       }
+      notes
       createdAt
       updatedAt
       routineSectionsId
@@ -999,7 +996,6 @@ export const createRoutineWorkout = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -1068,7 +1064,6 @@ export const updateRoutineWorkout = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -1137,7 +1132,6 @@ export const deleteRoutineWorkout = /* GraphQL */ `
           owner
         }
         name
-        sub
         days
         sections {
           nextToken
@@ -1202,7 +1196,6 @@ export const createSectionWorkout = /* GraphQL */ `
         routine {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -1213,6 +1206,7 @@ export const createSectionWorkout = /* GraphQL */ `
         workouts {
           nextToken
         }
+        notes
         createdAt
         updatedAt
         routineSectionsId
@@ -1269,7 +1263,6 @@ export const updateSectionWorkout = /* GraphQL */ `
         routine {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -1280,6 +1273,7 @@ export const updateSectionWorkout = /* GraphQL */ `
         workouts {
           nextToken
         }
+        notes
         createdAt
         updatedAt
         routineSectionsId
@@ -1336,7 +1330,6 @@ export const deleteSectionWorkout = /* GraphQL */ `
         routine {
           id
           name
-          sub
           days
           notes
           createdAt
@@ -1347,6 +1340,7 @@ export const deleteSectionWorkout = /* GraphQL */ `
         workouts {
           nextToken
         }
+        notes
         createdAt
         updatedAt
         routineSectionsId

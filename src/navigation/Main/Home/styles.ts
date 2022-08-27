@@ -14,4 +14,10 @@ export default StyleSheet.create({
   textLink: {
     color: theme.textLinkColor,
   },
+  root: {
+    height: "100%",
+  },
+  container: {
+    margin: 10,
+  },
 });

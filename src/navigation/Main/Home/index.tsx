@@ -11,6 +11,9 @@ import { MainStackParamList } from "..";
 import Routines from "./screens/Routines";
 import Routine from "./screens/Routine";
 import Workout from "./screens/Workout";
+import NewRoutine from "./screens/NewRoutine";
+import NewWorkout from "./screens/NewWorkout";
+import NewLog from "./screens/NewLog";
 
 export type HomeStackParamList = {
   Routines: undefined;
@@ -19,6 +22,9 @@ export type HomeStackParamList = {
     id: string;
   };
   Workout: undefined;
+  NewRoutine: undefined;
+  NewWorkout: undefined;
+  NewLog: undefined;
 };
 
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -37,6 +43,9 @@ const Home: React.FC<HomeProps> = ({ route }: HomeProps) => {
       <HomeStack.Screen name="Routines" component={Routines} />
       <HomeStack.Screen name="Routine" component={Routine} />
       <HomeStack.Screen name="Workout" component={Workout} />
+      <HomeStack.Screen name="NewRoutine" component={NewRoutine} />
+      <HomeStack.Screen name="NewWorkout" component={NewWorkout} />
+      <HomeStack.Screen name="NewLog" component={NewLog} />
     </HomeStack.Navigator>
   );
 };

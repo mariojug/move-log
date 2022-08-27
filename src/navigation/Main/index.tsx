@@ -15,6 +15,7 @@ import { theme } from "../../theme";
 
 import { AppStackParamList } from "../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import CustomText from "../../components/CustomText";
 
 export type MainStackParamList = {
   Home: undefined;
@@ -92,11 +93,11 @@ const Main: React.FC<MainProps> = ({ navigation }: MainProps) => {
                   size={30}
                   color={focused ? theme.focusColor : theme.blurColor}
                 />
-                <Text
+                <CustomText
                   style={focused ? styles.tabLabelFocus : styles.tabLabelBlur}
                 >
                   Home
-                </Text>
+                </CustomText>
               </View>
             ),
             tabBarLabel: "",
@@ -113,11 +114,12 @@ const Main: React.FC<MainProps> = ({ navigation }: MainProps) => {
                   size={30}
                   color={focused ? theme.focusColor : theme.blurColor}
                 />
-                <Text
+                <CustomText
                   style={focused ? styles.tabLabelFocus : styles.tabLabelBlur}
+                  weight={focused ? 600 : 400}
                 >
                   Settings
-                </Text>
+                </CustomText>
               </View>
             ),
             tabBarLabel: "",
@@ -137,7 +139,6 @@ const styles = StyleSheet.create({
   tabLabelFocus: {
     color: theme.focusColor,
     fontSize: 14,
-    fontWeight: "bold",
   },
   tabLabelBlur: {
     color: theme.blurColor,

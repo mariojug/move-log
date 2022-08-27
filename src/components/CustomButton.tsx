@@ -10,11 +10,12 @@ import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 import { theme } from "../theme";
+import CustomText from "./CustomText";
 
 type CustomButtonProps = {
   text: string;
   onPress: ((event: GestureResponderEvent) => void) | undefined;
-  type?: string | "primary";
+  variant?: "primary" | "secondary" | "tertiary";
   bgColor?: string;
   fgColor?: string;
   iconName?: string;
@@ -23,7 +24,7 @@ type CustomButtonProps = {
 const CustomButton: React.FC<CustomButtonProps> = ({
   text,
   onPress,
-  type,
+  variant: type,
   bgColor,
   fgColor,
   iconName,
@@ -49,7 +50,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
             />
           </View>
         )}
-        <Text
+        <CustomText
           style={[
             styles.text,
             type === "secondary"
@@ -59,9 +60,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
               : styles.text_PRIMARY,
             fgColor ? { color: fgColor } : {},
           ]}
+          weight={600}
         >
           {text}
-        </Text>
+        </CustomText>
       </View>
     </TouchableHighlight>
   );
@@ -80,20 +82,20 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
+    // width: "max-content",
   },
   container_PRIMARY: {
     backgroundColor: theme.buttonBgPrimary,
   },
   container_SECONDARY: {
     backgroundColor: theme.buttonBgSecondary,
+    // borderColor: "#555",
+    // borderWidth: 1,
   },
   container_TERTIARY: {
     backgroundColor: theme.buttonBgTertiary,
   },
-  text: {
-    fontWeight: "bold",
-  },
+  text: {},
   text_PRIMARY: {
     color: theme.buttonTextPrimary,
   },

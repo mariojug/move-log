@@ -3,6 +3,7 @@ import React from "react";
 
 import { MainStackParamList } from "..";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import CustomText from "../../../components/CustomText";
 
 type SettingsProps = NativeStackScreenProps<MainStackParamList, "Settings">;
 
@@ -15,7 +16,7 @@ const Settings: React.FC<SettingsProps> = ({
   return (
     <SafeAreaView>
       <View>
-        <Text>Settings</Text>
+        <CustomText>Settings</CustomText>
       </View>
     </SafeAreaView>
   );

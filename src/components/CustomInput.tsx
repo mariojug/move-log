@@ -1,26 +1,23 @@
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TextInputProps,
+} from "react-native";
 import React from "react";
-
 import { Control, Controller } from "react-hook-form";
+import { useFonts, WorkSans_500Medium } from "@expo-google-fonts/work-sans";
+
+import CustomText from "./CustomText";
 
 import { theme } from "../theme";
 
-type CustomInputProps = {
+type CustomInputProps = TextInputProps & {
   name: string;
   control: Control<any, any>;
-  placeholder: string | undefined;
-  secureTextEntry?: boolean | false;
-  autoCapitalize?: "none" | "sentences" | "words" | "characters" | undefined;
   rules?: object | {};
   disabled?: boolean | false;
-  keyboardType?:
-    | "default"
-    | "number-pad"
-    | "decimal-pad"
-    | "numeric"
-    | "email-address"
-    | "phone-pad"
-    | "url";
 };
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -32,7 +29,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
   rules,
   disabled,
   keyboardType,
+  multiline,
 }: CustomInputProps) => {
+  const [fontsLoaded] = useFonts({ WorkSans_500Medium });
+
+  if (!fontsLoaded) return null;
+
   return (
     <Controller
       name={name}
@@ -45,6 +47,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         <>
           <View style={[styles.container, error ? styles.container_ERROR : {}]}>
             <TextInput
+              multiline={multiline}
               placeholder={placeholder}
               value={value}
               onChangeText={onChange}
@@ -54,12 +57,14 @@ const CustomInput: React.FC<CustomInputProps> = ({
               autoCorrect={false}
               editable={!disabled}
               keyboardType={keyboardType}
+              placeholderTextColor={theme.placeholderColor}
+              style={{ fontFamily: "WorkSans_500Medium" }}
             />
           </View>
           {error && (
-            <Text style={{ color: "red", alignSelf: "stretch" }}>
+            <CustomText style={{ color: "red", alignSelf: "stretch" }}>
               {error.message || "Error"}
-            </Text>
+            </CustomText>
           )}
         </>
       )}
@@ -72,10 +77,9 @@ export default CustomInput;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    borderColor: "#e8e8e8",
+    borderColor: theme.placeholderColor,
     borderWidth: 1,
     borderRadius: theme.buttonBorderRadius,
-
     padding: theme.buttonPadding,
     marginVertical: theme.inputButtonMarginVertical,
   },

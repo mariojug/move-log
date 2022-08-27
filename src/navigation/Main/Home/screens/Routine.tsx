@@ -5,6 +5,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { HomeStackParamList } from "..";
 
 import styles from "../styles";
+import CustomText from "../../../../components/CustomText";
 
 type RoutineProps = NativeStackScreenProps<HomeStackParamList, "Routine">;
 
@@ -32,7 +33,9 @@ const Routine: React.FC<RoutineProps> = ({ navigation, route }) => {
   return (
     <SafeAreaView>
       <View style={styles.pageHeaderView}>
-        <Text style={styles.pageHeaderText}>{params.name}</Text>
+        <CustomText style={styles.pageHeaderText} weight={700}>
+          {params.name}
+        </CustomText>
       </View>
       {/* TODO: show routine notes, day(s) when it should be performed */}
       {/* TODO: separate workout components by sections */}
